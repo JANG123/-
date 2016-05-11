@@ -14,4 +14,6 @@
 @property (nonatomic,strong)NSString *typeStr;
 @property (nonatomic,strong) NSMutableArray *selectedDic;
 -(void)rightBarAction;
+@property (nonatomic,strong)NSMutableArray *dataArr;
+@property (nonatomic,assign)NSInteger index;
 @end

@@ -25,7 +25,14 @@
 @property(nonatomic,strong)UILabel *packagingLabel2;
 @property(nonatomic,strong)UILabel *timeLabel1;
 @property(nonatomic,strong)UILabel *timeLabel2;
-@property(nonatomic,strong)UIImageView *goodImageView1;
-@property(nonatomic,strong)UIImageView *goodImageView2;
-@property(nonatomic,strong)UIImageView *goodImageView3;
+
+@property (nonatomic,strong)UITableView *parametersTbaleView;
+
+@property (nonatomic,strong)UIImageView *goodImageView1;
+
+@property (nonatomic,strong)UIImageView *goodImageView2;
+
+@property (nonatomic,strong)UIImageView *goodImageView3;
+
+-(void)setTableFrame:(CGRect)frame;
 @end

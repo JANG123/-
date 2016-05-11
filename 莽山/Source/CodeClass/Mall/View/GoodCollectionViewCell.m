@@ -24,8 +24,6 @@
     _goodImage = [[UIImageView alloc]initWithFrame:self.frame];
     _goodImage.image = [UIImage imageNamed:@"图层-3"];
     [self addSubview:_goodImage];
-
-//    _gooNameLabel = [UILabel setFrame:CGRectMake(25/PxWidth, self.frame.size.height - 50/PxHeight, self.frame.size.width/2, 50/PxHeight) title:@""茶叶 tintColor:[UIColor blackColor] textAlignment:NSTextAlignmentLeft font:[UIFont ]]
     
     
 }

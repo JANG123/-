@@ -10,7 +10,7 @@
 #import "StoreView.h"
 #import "GoodView.h"
 #import "GoodDetailsView.h"
-@interface GoodViewController ()<UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,EvaluationTableDelegate,XTPageViewControllerDataSource>
+@interface GoodViewController ()<UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,EvaluationTableDelegate,XTPageViewControllerDataSource,UITableViewDataSource,UITableViewDelegate>
 @property (nonatomic,strong)UIScrollView *backView;
 @property (nonatomic,strong)NSMutableArray *imageArr;
 @property (nonatomic,strong)NSMutableArray *mainGoodArr;
@@ -27,6 +27,7 @@
 @property (nonatomic,strong)UIButton *buyButton;
 @property (nonatomic,strong)UIButton *collectionButton;
 @property (nonatomic,strong)UIButton *upButton;
+@property (nonatomic,strong)NSArray *RecommendGoodsArr;
 @end
 
 @implementation GoodViewController
@@ -45,6 +46,7 @@
     self.view.backgroundColor = [UIColor whiteColor];
     rectStatus = [[UIApplication sharedApplication] statusBarFrame];
     rectNav = self.navigationController.navigationBar.frame;
+    [self p_data];
     [self drawNav];
     [self.navigationController.navigationBar lt_setBackgroundColor:[UIColor clearColor]];
     [self drawCycleScrollView];
@@ -59,13 +61,19 @@
 
 -(void)drawView{
     _sv = [[StoreView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(_mainCycleScrollView.frame), kScreenWidth, 172/PxHeight)];
-    _sv.storeNameLabel.text = @"莽山特制茶叶";
-    _sv.addressLabel.text = @"￥180.00";
+    _sv.storeNameLabel.text = _aGoodsDetaile.GoodsName;
+    _sv.addressLabel.text = [NSString stringWithFormat:@"￥%@",_aGoodsDetaile.GoodsPrice.GoodsCurrentPrice];
     _sv.addressLabel.textColor = Color_indigo;
+    _sv.timeLabel.text = _aGoodsDetaile.BusinessHours;
+    _sv.locationLabel.text = _aGoodsDetaile.ShopAddress;
     [self.view addSubview:_sv];
     
     _gv = [[GoodView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(_sv.frame), kScreenWidth, 412/PxHeight)];
+    _gv.detailsLabel.text = _aGoodsDetaile.GoodsIntro;
     [self.view addSubview:_gv];
+    
+    [_gv.logoImageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",URL_posters,_aGoodsDetaile.ShopLogo]]];
+    _gv.nameLabel.text = _aGoodsDetaile.ShopName;
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
@@ -129,7 +137,7 @@
         [self.view addSubview:_mainCycleScrollView];
     }else{
         
-        _mainCycleScrollView = [SDCycleScrollView cycleScrollViewWithFrame:CGRectMake(0, -rectNav.size.height, kScreenWidth, 440/PxHeight) imageURLStringsGroup:_imageArr];
+        _mainCycleScrollView = [SDCycleScrollView cycleScrollViewWithFrame:CGRectMake(0, -rectNav.size.height-rectStatus.size.height, kScreenWidth, 440/PxHeight) imageURLStringsGroup:_imageArr];
         [self.view addSubview:_mainCycleScrollView];
     }
 }
@@ -173,9 +181,45 @@
     _greenLabel3 = [[UILabel alloc]initWithFrame:CGRectMake(25/PxWidth, CGRectGetHeight(_headButton1.frame) - 2, kScreenWidth/3 - 50/PxWidth, 2)];
     [_headButton3 addSubview:_greenLabel3];
     
-    _gdv = [[GoodDetailsView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(_headButton2.frame), kScreenWidth, kScreenHeight + 260/PxHeight)];
+    _gdv = [[GoodDetailsView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(_headButton2.frame), kScreenWidth, 55/PxHeight * _aGoodsDetaile.GoodsParameters.count + 750/PxHeight)];
     [self.view addSubview:_gdv];
     
+    _gdv.parametersTbaleView.delegate = self;
+    _gdv.parametersTbaleView.dataSource = self;
+    _gdv.parametersTbaleView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    
+    [_gdv setTableFrame:CGRectMake(0, 0, kScreenWidth, 55/PxHeight * _aGoodsDetaile.GoodsParameters.count)];
+    
+    [_gdv.parametersTbaleView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"cell"];
+
+    for (int i =0; i < _aGoodsDetaile.GoodsSp.count; i++) {
+        switch (i) {
+            case 0:
+            {
+                NSString *imageUrl = [NSString stringWithFormat:@"%@%@",URL_posters,_aGoodsDetaile.GoodsSp[i]];
+
+                [_gdv.goodImageView1 sd_setImageWithURL:[NSURL URLWithString:imageUrl]];
+            }
+                break;
+            case 1:
+            {
+                NSString *imageUrl = [NSString stringWithFormat:@"%@%@",URL_posters,_aGoodsDetaile.GoodsSp[i]];
+  
+                [_gdv.goodImageView2 sd_setImageWithURL:[NSURL URLWithString:imageUrl]];
+            }
+                break;
+            case 2:
+            {
+                NSString *imageUrl = [NSString stringWithFormat:@"%@%@",URL_posters,_aGoodsDetaile.GoodsSp[i]];
+
+                [_gdv.goodImageView3 sd_setImageWithURL:[NSURL URLWithString:imageUrl]];
+            }
+                break;
+            default:
+                break;
+        }
+    }
+
     _backView.contentSize = CGSizeMake(0, CGRectGetMaxY(_gdv.frame) + 75/PxHeight);
 }
 
@@ -198,9 +242,17 @@
         _classCollectView.hidden = NO;
         _evaluationTableView.hidden = YES;
         _gdv.hidden = YES;
-        _backView.contentSize = CGSizeMake(0, CGRectGetMaxY(_headButton1.frame) + 200/PxHeight * 4 + 75/PxHeight);
         [_headButton2 setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         _greenLabel2.backgroundColor = Color_indigo;
+        _RecommendGoodsArr = [NSArray array];
+        [[GoodsDateTolls shareGetGoodsDate]RecommendGoodsWithShopId:_aGoodsDetaile.ApplyShopsId pageIndex:1 pageSize:8 WithReturnValeuBlock:^(id code) {
+            _RecommendGoodsArr = code;
+             _backView.contentSize = CGSizeMake(0, CGRectGetMaxY(_headButton1.frame) + 200/PxHeight * (_RecommendGoodsArr.count + 1) / 2 + 75/PxHeight);
+            [_classCollectView reloadData];
+        } WithFailureBlock:^(NSError *error) {
+            
+        }];
+        
     }if (sender == _headButton3) {
         [_headButton3 setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         _greenLabel3.backgroundColor = Color_indigo;
@@ -247,14 +299,25 @@
     
     _collectionButton = [UIButton buttonWithType:UIButtonTypeCustom];
     _collectionButton.frame = CGRectMake(0, kScreenHeight - rectNav.size.height - rectStatus.size.height - 75/PxHeight, kScreenWidth/2, 75/PxHeight);
-    _collectionButton.backgroundColor = Color_back;
-    [_collectionButton setTitle:@"收藏" forState:UIControlStateNormal];
+    
+    if ([_aGoodsDetaile.IsLove isEqualToString:@"0"]) {
+        _collectionButton.backgroundColor = Color_back;
+        [_collectionButton setTitle:@"收藏" forState:UIControlStateNormal];
+        [_collectionButton setTitleColor:[UIColor colorWithRed:100/255.0 green:100/255.0 blue:100/255.0 alpha:1.0] forState:UIControlStateNormal];
+    }else{
+        _collectionButton.backgroundColor = [UIColor colorWithRed:241/255.0 green:101/255.0 blue:97/255.0 alpha:1.0];
+        [_collectionButton setTitle:@"取消收藏" forState:UIControlStateNormal];
+        [_collectionButton setTitleColor:[UIColor colorWithRed:100/255.0 green:100/255.0 blue:100/255.0 alpha:1.0] forState:UIControlStateNormal];
+    }
+
+    [_collectionButton addTarget:self action:@selector(collectionButtonAction) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:_collectionButton];
     
     _buyButton = [UIButton buttonWithType:UIButtonTypeCustom];
     _buyButton.frame = CGRectMake(kScreenWidth/2, kScreenHeight - rectNav.size.height - rectStatus.size.height - 75/PxHeight, kScreenWidth/2, 75/PxHeight);
     _buyButton.backgroundColor = Color_indigo;
     [_buyButton setTitle:@"立即购买" forState:UIControlStateNormal];
+    [_buyButton addTarget:self action:@selector(buyButtonAction) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:_buyButton];
     
     _upButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -263,9 +326,48 @@
     [_upButton addTarget:self action:@selector(upButtonAction) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:_upButton];
 }
+
 -(void)upButtonAction{
     [UIView animateWithDuration:0.5 animations:^{
         _backView.contentOffset = CGPointMake(0, 0);
+    }];
+}
+
+-(void)buyButtonAction{
+
+}
+
+//收藏
+-(void)collectionButtonAction{
+    [[LoginDataTools shareGetLoginDate] CollectionGoodsWithGoodsId:_aGoodsDetaile.GoodsId WithReturnValeuBlock:^(id code) {
+        NSString *returnValue = code;
+        if ([returnValue isEqualToString:@"0"]) {
+            [[GoodsDateTolls shareGetGoodsDate]GoodsDetailWithGoodsId:_aGoodsDetaile.GoodsId UserId:[LoginDataTools shareGetLoginDate].userModel.UserId WithReturnValeuBlock:^(id code) {
+                _aGoodsDetaile = code;
+                if ([_aGoodsDetaile.IsLove isEqualToString:@"0"]) {
+                    _collectionButton.backgroundColor = Color_back;
+                    [_collectionButton setTitle:@"收藏" forState:UIControlStateNormal];
+                    [_collectionButton setTitleColor:[UIColor colorWithRed:100/255.0 green:100/255.0 blue:100/255.0 alpha:1.0] forState:UIControlStateNormal];
+                    [self p_showAlertView:@"取消成功" message:nil];
+                }else{
+                    _collectionButton.backgroundColor = [UIColor colorWithRed:241/255.0 green:101/255.0 blue:97/255.0 alpha:1.0];
+                    [_collectionButton setTitle:@"取消收藏" forState:UIControlStateNormal];
+                    [_collectionButton setTitleColor:[UIColor colorWithRed:100/255.0 green:100/255.0 blue:100/255.0 alpha:1.0] forState:UIControlStateNormal];
+                    [self p_showAlertView:@"收藏成功" message:nil];
+                }
+            } WithFailureBlock:^(NSError *error) {
+                
+            }];
+        }else{
+            if ([_aGoodsDetaile.IsLove isEqualToString:@"0"]) {
+                [self p_showAlertView:@"收藏失败，请重试" message:nil];
+            }else{
+            [self p_showAlertView:@"取消失败，请重试" message:nil];
+            }
+        
+        }
+    } WithFailureBlock:^(NSError *error) {
+        [self p_showAlertView:@"当前网络不稳定" message:nil];
     }];
 }
 
@@ -274,8 +376,8 @@
 //定义展示的UICollectionViewCell的个数
 -(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    _classCollectView.frame = CGRectMake(0, CGRectGetMaxY(_headButton1.frame), kScreenWidth, 200/PxHeight * 4);
-    return 8;
+    _classCollectView.frame = CGRectMake(0, CGRectGetMaxY(_headButton1.frame), kScreenWidth, 200/PxHeight * (_RecommendGoodsArr.count + 1) / 2);
+    return _RecommendGoodsArr.count;
 }
 
 //定义展示的Section的个数
@@ -291,12 +393,14 @@
     static NSString * CellIdentifier = @"UICollectionViewCell";
     UICollectionViewCell * cell = [collectionView dequeueReusableCellWithReuseIdentifier:CellIdentifier forIndexPath:indexPath];
     
+    GoodsModel *aGood = _RecommendGoodsArr[indexPath.row];
+    
     UIImageView *goodImage = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth/2, 200/PxHeight)];
-    goodImage.image = [UIImage imageNamed:@"图层-4"];
+    [goodImage sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",URL_f_b,aGood.ImagePath]]];
     [cell addSubview:goodImage];
-    UILabel *gooNameLabel = [UILabel setFrame:CGRectMake(25/PxWidth, 150/PxHeight, kScreenWidth/4 - 25/PxWidth, 50/PxHeight) title:@"茶叶" tintColor:[UIColor blackColor] textAlignment:NSTextAlignmentLeft font:[UIFont systemFontOfSize:15.0]];
+    UILabel *gooNameLabel = [UILabel setFrame:CGRectMake(25/PxWidth, 150/PxHeight, kScreenWidth/4 - 25/PxWidth, 50/PxHeight) title:aGood.GoodsName tintColor:[UIColor blackColor] textAlignment:NSTextAlignmentLeft font:[UIFont systemFontOfSize:15.0]];
     [cell addSubview:gooNameLabel];
-    UILabel *priceLabel =  [UILabel setFrame:CGRectMake(kScreenWidth/2 - CGRectGetMaxX(gooNameLabel.frame), 150/PxHeight, kScreenWidth/4 - 20/PxWidth, 50/PxHeight) title:@"¥188" tintColor:Color_indigo textAlignment:NSTextAlignmentRight font:[UIFont systemFontOfSize:15.0]];
+    UILabel *priceLabel =  [UILabel setFrame:CGRectMake(kScreenWidth/2 - CGRectGetMaxX(gooNameLabel.frame), 150/PxHeight, kScreenWidth/4 - 20/PxWidth, 50/PxHeight) title:[NSString stringWithFormat:@"¥%@",aGood.GoodsCurrentPrice] tintColor:Color_indigo textAlignment:NSTextAlignmentRight font:[UIFont systemFontOfSize:15.0]];
     [cell addSubview:priceLabel];
     
     [self drawLine:indexPath.row];
@@ -353,7 +457,14 @@
 //UICollectionView被选中时调用的方法
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    
+    GoodsModel *aGood = _RecommendGoodsArr[indexPath.row];
+    [[GoodsDateTolls shareGetGoodsDate]GoodsDetailWithGoodsId:aGood.GoodsId UserId:[LoginDataTools shareGetLoginDate].userModel.UserId WithReturnValeuBlock:^(id code) {
+        GoodViewController *gv = [[GoodViewController alloc]init];
+        gv.aGoodsDetaile = code;
+        [self.navigationController pushViewController:gv animated:YES];
+    } WithFailureBlock:^(NSError *error) {
+        
+    }];
 }
 
 //返回这个UICollectionView是否可以被选择
@@ -405,6 +516,59 @@
     return ec;
 }
 
+#pragma mark -- UIDate
+-(void)p_data{
+    _imageArr = [NSMutableArray array];
+    for (NSString *str in _aGoodsDetaile.ImageDetails) {
+        [_imageArr addObject:[NSString stringWithFormat:@"%@%@",URL_f_b,str]];
+    }
+}
+
+
+
+#pragma mark - Table view data source
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+#warning Incomplete implementation, return the number of sections
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+#warning Incomplete implementation, return the number of rows
+    return _aGoodsDetaile.GoodsParameters.count;
+}
+
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return 55/PxHeight;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell" forIndexPath:indexPath];
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    
+    NSDictionary *tempDict = _aGoodsDetaile.GoodsParameters[indexPath.row];
+    
+    UILabel * titleLabel = [UILabel setFrame:CGRectMake(25/PxWidth, 15/PxHeight, 160/PxWidth, 40/PxHeight) title:[tempDict objectForKey:@"ParameterName"] tintColor:[UIColor colorWithRed:91/255.0 green:91/255.0 blue:91/255.0 alpha:1.0] textAlignment:NSTextAlignmentLeft font:[UIFont systemFontOfSize:15.0]];
+    [cell addSubview:titleLabel];
+    
+    UILabel * textLabel = [UILabel setFrame:CGRectMake(CGRectGetMaxX(titleLabel.frame), CGRectGetMinY(titleLabel.frame), CGRectGetWidth(titleLabel.frame), CGRectGetHeight(titleLabel.frame)) title:[tempDict objectForKey:@"ParameterExplain"]  tintColor:[UIColor blackColor] textAlignment:NSTextAlignmentLeft font:[UIFont systemFontOfSize:15.0]];
+    [cell addSubview:textLabel];
+
+    
+    return cell;
+}
+
+
+//显示提示框
+- (void)p_showAlertView:(NSString *)title message:(NSString *)message
+{
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:nil];
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:nil];
+    [alertController addAction:okAction];
+    [alertController addAction:cancelAction];
+    [self presentViewController:alertController animated:YES completion:nil];
+}
 /*
 #pragma mark - Navigation
 

@@ -38,10 +38,20 @@
 
 -(void)leftBar{
     [self.navigationController popViewControllerAnimated:YES];
+   
 }
 
 -(void)rightBar{
-
+    SearchViewController *searchTVC = [[SearchViewController alloc]init];
+    
+    searchTVC.searchBlock = ^(NSString *code){
+        if ([code isEqualToString:@"是"]) {
+            LoginViewController *ll = [[LoginViewController alloc]init];
+            [self.navigationController pushViewController:ll animated:YES];
+        }
+    };
+    
+    [self presentViewController:searchTVC animated:YES completion:nil];
 }
 
 - (void)didReceiveMemoryWarning {

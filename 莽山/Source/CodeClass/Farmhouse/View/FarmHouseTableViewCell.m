@@ -30,11 +30,11 @@
     _logoView.image = [UIImage imageNamed:@"钱"];
     [self addSubview:_logoView];
     
-    _priceLabel = [UILabel setFrame:CGRectMake(CGRectGetMaxX(_logoView.frame), CGRectGetMinY(_logoView.frame), [UILabel widthForString:@"￥88/人" font:[UIFont systemFontOfSize:14.0]], CGRectGetHeight(_logoView.frame)) title:@"￥88/人" tintColor:[UIColor whiteColor] textAlignment:NSTextAlignmentLeft font:[UIFont systemFontOfSize:14.0]];
+    _priceLabel = [UILabel setFrame:CGRectMake(CGRectGetMaxX(_logoView.frame), CGRectGetMinY(_logoView.frame), [UILabel widthForString:@"88/人" font:[UIFont systemFontOfSize:14.0]], CGRectGetHeight(_logoView.frame)) title:@"88/人" tintColor:[UIColor whiteColor] textAlignment:NSTextAlignmentLeft font:[UIFont systemFontOfSize:14.0]];
     [self addSubview:_priceLabel];
     
-    _logoView.frame = CGRectMake(kScreenWidth - CGRectGetWidth(_priceLabel.frame) - CGRectGetWidth(_logoView.frame) - 15/PxWidth, 190/PxHeight, 25/PxWidth, 25/PxWidth);
-    _priceLabel.frame =  CGRectMake(CGRectGetMaxX(_logoView.frame), CGRectGetMinY(_logoView.frame), [UILabel widthForString:@"￥88/人" font:[UIFont systemFontOfSize:14.0]] + 5/PxWidth, CGRectGetHeight(_logoView.frame));
+    _logoView.frame = CGRectMake(kScreenWidth - CGRectGetWidth(_priceLabel.frame) - CGRectGetWidth(_logoView.frame) - 20/PxWidth, 190/PxHeight, 25/PxWidth, 25/PxWidth);
+    _priceLabel.frame =  CGRectMake(CGRectGetMaxX(_logoView.frame) + 5/PxWidth, CGRectGetMinY(_logoView.frame), [UILabel widthForString:@"88/人" font:[UIFont systemFontOfSize:14.0]] + 5/PxWidth, CGRectGetHeight(_logoView.frame));
 }
 
 @end

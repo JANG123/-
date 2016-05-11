@@ -47,6 +47,7 @@
                 NSString *returnValue =  [NSString stringWithFormat:@"%@",code];
                 if ([returnValue isEqualToString:@"0"]) {
                     block(returnValue);
+                    NSLog(@"成功");
                 }
             } WithFailureBlock:^(NSError *error) {
                 

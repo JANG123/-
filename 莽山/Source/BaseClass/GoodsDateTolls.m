@@ -29,17 +29,13 @@ static GoodsDateTolls *gData;
         NSDictionary *dict = (NSDictionary *)code;
         NSNumber *longNumber = [NSNumber numberWithLong:[[dict objectForKey:@"ReturnValue"] longLongValue]];
         NSString *ReturnValue = [longNumber stringValue];
+        NSArray *tempArr = [NSArray array];
         if ([ReturnValue isEqualToString:@"0"]) {
-            NSArray *PartitionIdArr = [dict objectForKey:@"Items"];
-            for (NSDictionary *d in PartitionIdArr) {
-                [self ListGoodsWithName:@"" OrderName:@"" TypeId:@"" pageIndex:@"" pageSize:@"5" ShopId:@"" EcologicalId:@"1" PartitionId:[d objectForKey:@"PartitionId"] WithReturnValeuBlock:^(id code) {
-                    
-                } WithFailureBlock:^(NSError *error) {
-                    
-                }];
-            }
+            tempArr = [dict objectForKey:@"Items"];
+            block(tempArr);
+        }else{
+            block(tempArr);
         }
-        block(ReturnValue);
         
     } WithFailureBlock:^(NSError *error) {
         failureBlock(error);
@@ -69,5 +65,73 @@ static GoodsDateTolls *gData;
         failureBlock(error);
     }];
 }
+
+//商品详情查询
+-(void)GoodsDetailWithGoodsId:(NSString *)GoodsId UserId:(NSString *)UserId WithReturnValeuBlock:(ReturnValueBlock)block WithFailureBlock:(FailureBlock)failureBlock{
+    NSString *urlString = [NSString stringWithFormat:@"%@%@?GoodsId=%@&UserId=%@",URL_api,URL_GoodsDetail,GoodsId,UserId];
+    [AFNDataTools_JYT NetRequestGetWithUrl:urlString WithReturnValeuBlock:^(id code) {
+        
+        NSDictionary *dict = (NSDictionary *)code;
+        NSNumber *longNumber = [NSNumber numberWithLong:[[dict objectForKey:@"ReturnValue"] longLongValue]];
+        NSString *ReturnValue = [longNumber stringValue];
+        GoodsDetaileModel *aGoodsDetaile;
+        if ([ReturnValue isEqualToString:@"0"]) {
+
+            aGoodsDetaile= [GoodsDetaileModel mj_objectWithKeyValues:[dict objectForKey:@"View"]];
+            GoodsPriceModel *aGoodsPrice = [GoodsPriceModel mj_objectWithKeyValues:[[dict objectForKey:@"View"] objectForKey:@"GoodsPrice"][0]];
+            aGoodsDetaile.GoodsPrice = aGoodsPrice;
+        }
+        block(aGoodsDetaile);
+        
+    } WithFailureBlock:^(NSError *error) {
+        failureBlock(error);
+    }];
+}
+
+
+//推荐商品查询
+-(void)RecommendGoodsWithShopId:(NSString *)ShopId pageIndex:(NSInteger)pageIndex pageSize:(NSInteger)pageSize  WithReturnValeuBlock:(ReturnValueBlock)block WithFailureBlock:(FailureBlock)failureBlock{
+    NSString *urlString = [NSString stringWithFormat:@"%@%@?ShopId=%@&pageIndex=%ld&pageSize=%ld",URL_api,URL_RecommendGoods,ShopId,pageIndex,pageSize];
+    [AFNDataTools_JYT NetRequestGetWithUrl:urlString WithReturnValeuBlock:^(id code) {
+        
+        NSDictionary *dict = (NSDictionary *)code;
+        NSNumber *longNumber = [NSNumber numberWithLong:[[dict objectForKey:@"ReturnValue"] longLongValue]];
+        NSString *ReturnValue = [longNumber stringValue];
+        NSMutableArray *tempArr = [NSMutableArray array];
+        if ([ReturnValue isEqualToString:@"0"]) {
+            for (NSDictionary *d in [dict objectForKey:@"Items"] ) {
+                GoodsModel *aGoods = [GoodsModel mj_objectWithKeyValues:d];
+                [tempArr addObject:aGoods];
+            }
+        }
+        block(tempArr);
+        
+    } WithFailureBlock:^(NSError *error) {
+        failureBlock(error);
+    }];
+}
+
+//根据店铺或商品名称查店铺
+-(void)GetShopByNameWithName:(NSString *)Name pageIndex:(NSInteger)pageIndex pageSize:(NSInteger)pageSize WithReturnValeuBlock:(ReturnValueBlock)block WithFailureBlock:(FailureBlock)failureBlock{
+    NSString *urlString = [NSString stringWithFormat:@"%@%@?Name=%@&pageIndex=%ld&pageSize=%ld",URL_api,URL_GetShopByName,Name,pageIndex,pageSize];
+    [AFNDataTools_JYT NetRequestGetWithUrl:urlString WithReturnValeuBlock:^(id code) {
+        
+        NSDictionary *dict = (NSDictionary *)code;
+        NSNumber *longNumber = [NSNumber numberWithLong:[[dict objectForKey:@"ReturnValue"] longLongValue]];
+        NSString *ReturnValue = [longNumber stringValue];
+        NSMutableArray *tempArr = [NSMutableArray array];
+        if ([ReturnValue isEqualToString:@"0"]) {
+            for (NSDictionary *d in [dict objectForKey:@"Items"] ) {
+                ShopModel *aShop = [ShopModel mj_objectWithKeyValues:d];
+                [tempArr addObject:aShop];
+            }
+        }
+        block(tempArr);
+        
+    } WithFailureBlock:^(NSError *error) {
+        failureBlock(error);
+    }];
+}
+
 
 @end

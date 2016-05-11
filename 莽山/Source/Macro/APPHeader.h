@@ -24,6 +24,8 @@
 #import "OrderSelectionButton.h"
 #import "LoginViewController.h"
 #import "MapViewController.h"
+#import "SearchViewController.h"
+
 
 
 #import "UITableView+ExtraCell.h"
@@ -31,10 +33,16 @@
 #import "UINavigationBar+Awesome.h"
 #import "AFNDataTools-JYT.h"
 #import "NetWorkTolls.h"
+#import "NSObject+tag.h"
 
 
 #import "UserInfoModel.h"
 #import "GoodsModel.h"
+#import "GoodsDetaileModel.h"
+#import "GoodsPriceModel.h"
+#import "MyFavouriteModel.h"
+#import "MyShopModel.h"
+#import "ShopModel.h"
 
 
 #import "LoginDataTools.h"
@@ -73,6 +81,12 @@
 #define Color_back [UIColor colorWithRed:234/255.0 green:234/255.0 blue:234/255.0 alpha:1.0]
 
 #define Color_indigo [UIColor colorWithRed:56/255.0 green:219/255.0 blue:202/255.0 alpha:1.0]
+
+
+#define Animation_Y 200
+
+//选项卡高度
+#define kXTDefaultTabBarHeight 45
 
 
 

@@ -22,6 +22,11 @@
 @property (nonatomic,strong)UIImageView *good3ImageView;
 @property (nonatomic,strong)UIImageView *good4ImageView;
 @property (nonatomic,strong)UIImageView *good5ImageView;
+@property (nonatomic,strong)UIGestureRecognizer *singleTap1;
+@property (nonatomic,strong)UIGestureRecognizer *singleTap2;
+@property (nonatomic,strong)UIGestureRecognizer *singleTap3;
+@property (nonatomic,strong)UIGestureRecognizer *singleTap4;
+@property (nonatomic,strong)UIGestureRecognizer *singleTap5;
 
 @property (nonatomic,weak)id <TypeDetailsViewDelegate>delegate;
 @end

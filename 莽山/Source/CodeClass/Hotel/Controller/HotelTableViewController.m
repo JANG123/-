@@ -23,12 +23,14 @@
     [self.tableView registerClass:[HoteTableViewCell class] forCellReuseIdentifier:@"HoteTableViewCell"];
     [self p_addButton];
     self.view.backgroundColor = Color_back;
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    _Offset = 0;
 }
 
 -(void)p_addButton{
     
     _dateButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    _dateButton.frame = CGRectMake(155/PxWidth, kScreenHeight - 120/PxHeight - K_rectNav - K_rectStatus, 60/PxHeight, 60/PxHeight);
+    _dateButton.frame = CGRectMake(155/PxWidth, kScreenHeight - 150/PxHeight - K_rectNav - K_rectStatus, 60/PxHeight, 60/PxHeight);
     [_dateButton setImage:[UIImage imageNamed:@"日期"] forState:UIControlStateNormal];
     [_dateButton addTarget:self action:@selector(dateButtonAction:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:_dateButton];
@@ -63,10 +65,10 @@
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView{
     CGFloat offsetY = scrollView.contentOffset.y;
     if (offsetY > 0) {
-        _dateButton.frame = CGRectMake(155/PxWidth, kScreenHeight - 120/PxHeight - K_rectNav - K_rectStatus + offsetY, 60/PxHeight, 60/PxHeight);
+        _dateButton.frame = CGRectMake(155/PxWidth, kScreenHeight - 150/PxHeight - K_rectNav - K_rectStatus + offsetY, 60/PxHeight, 60/PxHeight);
         _searchButton.frame = CGRectMake(CGRectGetMaxX(_dateButton.frame) + 112/PxWidth, CGRectGetMinY(_dateButton.frame), 60/PxHeight, 60/PxHeight);
     }else{
-        _dateButton.frame = CGRectMake(155/PxWidth, kScreenHeight - 120/PxHeight - K_rectNav - K_rectStatus, 60/PxHeight, 60/PxHeight);
+        _dateButton.frame = CGRectMake(155/PxWidth, kScreenHeight - 150/PxHeight - K_rectNav - K_rectStatus, 60/PxHeight, 60/PxHeight);
         _searchButton.frame = CGRectMake(CGRectGetMaxX(_dateButton.frame) + 112/PxWidth, CGRectGetMinY(_dateButton.frame), 60/PxHeight, 60/PxHeight);
     }
 }
@@ -85,7 +87,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 
-    return 4;
+    return 20;
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -98,7 +100,7 @@
     if(!cell) {
         cell = [[HoteTableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"HoteTableViewCell"];
     }
-    NSString *imageStr = [NSString stringWithFormat:@"%ldh",indexPath.row +1];
+    NSString *imageStr = [NSString stringWithFormat:@"%ldh",indexPath.row%4 +1];
     UIImageView *goodImageView = [[UIImageView alloc]initWithFrame:CGRectMake(-50, 0, kScreenWidth, 230/PxHeight)];
     goodImageView.image = [UIImage imageNamed:imageStr];
     [cell setBackgroundView:goodImageView];
@@ -116,7 +118,27 @@
     [self.navigationController pushViewController:hv animated:YES];
 }
 
+//tableView的代理方法。
+-(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath{
+    
 
+    if (indexPath.row > _Offset) {
+        
+        cell.center = CGPointMake(cell.center.x, cell.center.y + Animation_Y/PxHeight);
+        POPBasicAnimation *anBasic = [POPBasicAnimation animationWithPropertyNamed:kPOPLayerPositionY];
+        anBasic.toValue = @(cell.center.y - Animation_Y/PxHeight);
+        anBasic.beginTime = CACurrentMediaTime();
+        [cell pop_addAnimation:anBasic forKey:@"position"];
+    }
+    
+     _Offset = indexPath.row ;
+    
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    self.isApper = true;
+}
 
 /*
 // Override to support conditional editing of the table view.

@@ -66,11 +66,10 @@
 
 -(void)viewWillAppear:(BOOL)animated{
     
-    [[LoginDataTools shareGetLoginDate]LoginWithLoginId:[UserAccount UserName] LoginPwd:[UserAccount PassWord] Ip:[NetWorkTolls getIPAddress] WithReturnValeuBlock:^(id code) {
+    [[LoginDataTools shareGetLoginDate]RenovateUserWithReturnValeuBlock:^(id code) {
         dispatch_async(dispatch_get_main_queue(), ^{
-        [self.tableView reloadData];
+            [self.tableView reloadData];
         });
-        
     } WithFailureBlock:^(NSError *error) {
         
     }];

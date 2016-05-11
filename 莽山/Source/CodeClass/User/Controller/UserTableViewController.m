@@ -122,6 +122,7 @@
         if ([LoginDataTools shareGetLoginDate].userModel.LoginId != nil) {
             cell.userNameLabel.text = [LoginDataTools shareGetLoginDate].userModel.LoginId;
         }
+        [cell.headImageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",URL_user,[LoginDataTools shareGetLoginDate].userModel.ImageName]]];
         return cell;
     }
     if (indexPath.section == 0 && indexPath.row == 2) {

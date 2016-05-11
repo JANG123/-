@@ -28,7 +28,7 @@
     [self.tableView registerClass:[OrderTableViewCell class] forCellReuseIdentifier:@"OrderTableViewCell"];
     
     _collectionButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    _collectionButton.frame = CGRectMake(0, kScreenHeight - K_rectNav - K_rectStatus - 75/PxHeight - 45, kScreenWidth/2, 75/PxHeight);
+    _collectionButton.frame = CGRectMake(0, kScreenHeight - K_rectNav - K_rectStatus - 75/PxHeight - kXTDefaultTabBarHeight/PxHeight, kScreenWidth/2, 75/PxHeight);
     _collectionButton.backgroundColor = Color_back;
 
     UIImageView * logoImageView = [[UIImageView alloc]initWithFrame:CGRectMake(80/PxWidth, 20/PxHeight, 35/PxHeight, 35/PxHeight)];
@@ -50,9 +50,9 @@
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView{
     CGFloat offsetY = scrollView.contentOffset.y;
     if (offsetY > 0) {
-        _collectionButton.frame = CGRectMake(0, kScreenHeight - K_rectNav - K_rectStatus - 75/PxHeight - 45 + offsetY, kScreenWidth/2, 75/PxHeight);
+        _collectionButton.frame = CGRectMake(0, kScreenHeight - K_rectNav - K_rectStatus - 75/PxHeight - kXTDefaultTabBarHeight/PxHeight + offsetY, kScreenWidth/2, 75/PxHeight);
     }else{
-        _collectionButton.frame = CGRectMake(0, kScreenHeight - K_rectNav - K_rectStatus - 75/PxHeight - 45, kScreenWidth/2, 75/PxHeight);
+        _collectionButton.frame = CGRectMake(0, kScreenHeight - K_rectNav - K_rectStatus  - 75/PxHeight - kXTDefaultTabBarHeight/PxHeight, kScreenWidth/2, 75/PxHeight);
     }
     _buyButton.frame = CGRectMake(kScreenWidth/2, CGRectGetMinY(_collectionButton.frame), kScreenWidth/2, 75/PxHeight);
 }
@@ -81,9 +81,32 @@
     if (cell==nil) {
         cell= [[OrderTableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"OrderTableViewCell"];
     }
-    
+    cell.pirceLabel.attributedText = [self LabelAttributedString:@"¥42/份"];
     return cell;
 
+}
+
+
+-(NSMutableAttributedString *)LabelAttributedString:(NSString *)Str{
+    
+    NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:Str];
+    //数字前文字字体
+    NSDictionary *attributeDict = [NSDictionary dictionaryWithObjectsAndKeys:
+                                   [UIFont systemFontOfSize:19.0],NSFontAttributeName,nil];
+    [str addAttributes:attributeDict range:NSMakeRange(0,Str.length - 2)];
+    
+    //设置颜色
+    [str addAttribute:NSForegroundColorAttributeName value:Color_indigo range:NSMakeRange(0,Str.length - 2)];
+    
+    //数字
+    attributeDict = [NSDictionary dictionaryWithObjectsAndKeys:
+                     [UIFont systemFontOfSize:14.0],NSFontAttributeName,nil];
+    [str addAttributes:attributeDict range:NSMakeRange(Str.length - 2,2)];
+    
+    //设置颜色
+    [str addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithRed:102/255.0 green:102/255.0 blue:102/255.0 alpha:1] range:NSMakeRange(Str.length - 2,2)];
+    
+    return str;
 }
 
 /*

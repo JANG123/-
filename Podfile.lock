@@ -2,15 +2,18 @@ PODS:
   - AMap3DMap (3.1.0.1)
   - AMapSearch (3.0.1)
   - MJExtension (3.0.5)
+  - pop (1.0.8)
 
 DEPENDENCIES:
   - AMap3DMap
   - AMapSearch
   - MJExtension
+  - pop
 
 SPEC CHECKSUMS:
   AMap3DMap: 58f27323368dd0e351cc3c823a77ba389da294fc
   AMapSearch: 431b082417bd3da0c2fe594c4822b664607891e9
   MJExtension: 01d6d6a3505de41960e4f9f29972445530f4be3d
+  pop: bb773ae2c791ca2629de13b347e7a8b450fa6a57
 
 COCOAPODS: 0.39.0

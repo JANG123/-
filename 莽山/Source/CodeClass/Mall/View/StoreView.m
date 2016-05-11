@@ -21,7 +21,7 @@
 
 -(void)p_setupView
 {
-    _storeNameLabel = [UILabel setFrame:CGRectMake(25/PxWidth, 10/PxHeight, kScreenWidth/2, 35/PxHeight) title:@"农家休闲店" tintColor:[UIColor blackColor] textAlignment:NSTextAlignmentLeft font:[UIFont systemFontOfSize:17.0]];
+    _storeNameLabel = [UILabel setFrame:CGRectMake(25/PxWidth, 10/PxHeight, kScreenWidth/2, 32/PxHeight) title:@"农家休闲店" tintColor:[UIColor blackColor] textAlignment:NSTextAlignmentLeft font:[UIFont systemFontOfSize:17.0]];
     [self addSubview:_storeNameLabel];
     _addressLabel = [UILabel setFrame:CGRectMake(CGRectGetMinX(_storeNameLabel.frame), CGRectGetMaxY(_storeNameLabel.frame), CGRectGetWidth(_storeNameLabel.frame), CGRectGetHeight(_storeNameLabel.frame)) title:@"湖南莽山森林公园附近500m" tintColor:[UIColor colorWithRed:91/255.0 green:91/255.0 blue:91/255.0 alpha:1.0] textAlignment:NSTextAlignmentLeft font:[UIFont systemFontOfSize:14.0]];
     [self addSubview:_addressLabel];
@@ -29,7 +29,7 @@
     _phoneButton.frame = CGRectMake(kScreenWidth - 65/PxWidth, 15/PxHeight, 40/PxWidth, 40/PxWidth);
     [_phoneButton setImage:[UIImage imageNamed:@"电话"] forState:UIControlStateNormal];
     [self addSubview:_phoneButton];
-    UILabel *lineLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(_addressLabel.frame), kScreenWidth, 1)];
+    UILabel *lineLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(_addressLabel.frame) + 6/PxHeight, kScreenWidth, 1)];
     lineLabel.backgroundColor = Color_back;
     [self addSubview:lineLabel];
     

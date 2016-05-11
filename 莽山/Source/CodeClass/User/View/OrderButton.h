@@ -11,4 +11,7 @@
 @interface OrderButton : UIButton
 @property (nonatomic,strong)UIImageView *logoView;
 @property (nonatomic,strong)UILabel *textLabel;
+
+-(void)logoViewFrame:(CGRect)frame;
+
 @end

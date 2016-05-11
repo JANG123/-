@@ -15,6 +15,8 @@
     BOOL isSelected;
     NSInteger _numberOfPages;
 }
+@property (nonatomic,strong)NSString *GoodsID;
+@property (nonatomic,strong)GoodsDetaileModel *aGoodsDetaile;
 @property (nonatomic,strong)SDCycleScrollView *mainCycleScrollView;
 @property (nonatomic,strong)EvaluationTable *evaluationTableView;
 @end

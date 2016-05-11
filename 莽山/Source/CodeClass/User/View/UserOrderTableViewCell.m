@@ -38,6 +38,7 @@
     _refundButton = [[OrderButton alloc]initWithFrame:CGRectMake(CGRectGetMaxX(_evaluationButton.frame), 0, kScreenWidth/4, 87/PxHeight)];
     _refundButton.logoView.image = [UIImage imageNamed:@"退款"];
     _refundButton.textLabel.text = @"退款/售后";
+    [_refundButton logoViewFrame:CGRectMake(50/PxWidth, 15/PxHeight - 2/PxWidth, 36/PxWidth, 33/PxWidth)];
     [self addSubview:_refundButton];
 }
 

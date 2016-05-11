@@ -122,7 +122,7 @@
     _sv.storeNameLabel.text = @"莽山原生态农家乐园";
     [self.view addSubview:_sv];
     
-    UILabel *recommendLabel = [UILabel setFrame:CGRectMake(25/PxWidth, CGRectGetMaxY(_sv.frame), kScreenWidth/2, 45/PxHeight) title:@"独家推荐" tintColor:[UIColor blackColor] textAlignment:NSTextAlignmentLeft font:[UIFont systemFontOfSize:17.0]];
+    UILabel *recommendLabel = [UILabel setFrame:CGRectMake(25/PxWidth, CGRectGetMaxY(_sv.frame) + 5/PxHeight, kScreenWidth/2, 40/PxHeight) title:@"独家推荐" tintColor:[UIColor blackColor] textAlignment:NSTextAlignmentLeft font:[UIFont systemFontOfSize:17.0]];
     [self.view addSubview:recommendLabel];
     UILabel *lineLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(recommendLabel.frame), kScreenWidth, 1)];
     lineLabel.backgroundColor = Color_back;

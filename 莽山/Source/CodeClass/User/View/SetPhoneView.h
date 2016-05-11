@@ -29,7 +29,10 @@
 @property (nonatomic,strong)NSString *updateTextString2;
 
 @property (nonatomic,strong)UILabel *codeLabel;
+@property (nonatomic,strong)NSString *codeString;
 @property (nonatomic,strong)UITextField *codeTextField;
+@property (nonatomic,strong)NSString *codeTextString;
+
 @property (nonatomic,strong)UIButton *codeButton;
 @property (nonatomic,strong)UIButton *determineButton;
 @end

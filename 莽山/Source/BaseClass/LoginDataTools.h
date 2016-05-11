@@ -62,6 +62,13 @@
          WithReturnValeuBlock: (ReturnValueBlock) block
              WithFailureBlock: (FailureBlock) failureBlock;
 
+//绑定获取验证码
+-(void)EditPhoneGetCodeWithLoginId:(NSString *)LoginId
+                            UserId:(NSString *)UserId
+                           Md5Code:(NSString *)Md5Code
+              WithReturnValeuBlock:(ReturnValueBlock)block
+                  WithFailureBlock:(FailureBlock)failureBlock;
+
 //修改邮箱
 -(void)EditEmailWithUserId:(NSString *)UserId
                  Email:(NSString *)Email
@@ -86,20 +93,37 @@
           WithReturnValeuBlock: (ReturnValueBlock) block
               WithFailureBlock: (FailureBlock) failureBlock;
 
-//我的关注
+//我关注的商品
 -(void)MyFavouriteWithUserId:(NSString *)UserId
                      Md5Code:(NSString *)Md5Code
+                    pageIndex:(NSInteger)pageIndex
         WithReturnValeuBlock: (ReturnValueBlock) block
             WithFailureBlock: (FailureBlock) failureBlock;
 
-//取消关注
--(void)FavouriteDeleteWithUserId:(NSString *)UserId
-                          FavoId:(NSString *)FavoId
-                     Md5Code:(NSString *)Md5Code
+//商品取消关注
+-(void)FavouriteDeleteWithFavoId:(NSString *)FavoId
         WithReturnValeuBlock: (ReturnValueBlock) block
             WithFailureBlock: (FailureBlock) failureBlock;
 
+//收藏/取消收藏商品
+-(void)CollectionGoodsWithGoodsId:(NSString *)GoodsId
+            WithReturnValeuBlock: (ReturnValueBlock) block
+                WithFailureBlock: (FailureBlock) failureBlock;
 
+//我的关注店铺
+-(void)MyShopsWithUserId:(NSString *)UserId
+                 Md5Code:(NSString *)Md5Code
+               pageIndex:(NSInteger)pageIndex
+    WithReturnValeuBlock: (ReturnValueBlock) block
+        WithFailureBlock: (FailureBlock) failureBlock;
+
+//取消/收藏店铺
+-(void)LoveShopNoWithShopId:(NSString *)ShopId
+            WithReturnValeuBlock: (ReturnValueBlock) block
+                WithFailureBlock: (FailureBlock) failureBlock;
+
+//刷新
+-(void)RenovateUserWithReturnValeuBlock:(ReturnValueBlock)block WithFailureBlock:(FailureBlock)failureBlock;
 
 
 @end

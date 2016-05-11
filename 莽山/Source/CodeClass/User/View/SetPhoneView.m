@@ -41,6 +41,7 @@
     UILabel *lineLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(_oldtextLabel.frame) - 1, kScreenWidth, 1)];
     lineLabel.backgroundColor = Color_back;
     [_backView addSubview:lineLabel];
+    _oldtextString = oldtextString;
 }
 
 -(void)setUpdateString2:(NSString *)updateString2{
@@ -109,6 +110,30 @@
 
 -(void)setUpdateTextString:(NSString *)updateTextString{
     _updateTextField.placeholder = updateTextString;
+}
+
+-(void)setCodeString:(NSString *)codeString{
+    _backView.frame = CGRectMake(0, 20/PxHeight + 64, kScreenWidth, 134/PxHeight);
+    _codeLabel = [UILabel setFrame:CGRectMake(25/PxWidth, CGRectGetMaxY(_oldtextLabel.frame) , [UILabel widthForString:@"验证码:" font:[UIFont systemFontOfSize:15.0]], 67/PxHeight) title:@"验证码:" tintColor:[UIColor colorWithRed:76/255.0 green:76/255.0 blue:76/255.0 alpha:1.0] textAlignment:NSTextAlignmentLeft font:[UIFont systemFontOfSize:15.0]];
+    [_backView addSubview:_codeLabel];
+    
+    _codeButton =[UIButton buttonWithType:UIButtonTypeCustom];
+    _codeButton.frame = CGRectMake(kScreenWidth- 25/PxWidth -[UILabel widthForString:@"获取验证码" font:[UIFont systemFontOfSize:15.0]], CGRectGetMinY(_codeLabel.frame), [UILabel widthForString:@"获取验证码" font:[UIFont systemFontOfSize:15.0]], CGRectGetHeight(_codeLabel.frame));
+    _codeButton.titleLabel.font = [UIFont systemFontOfSize:15.0];
+    [_codeButton setTitle:@"获取验证码" forState:UIControlStateNormal];
+    [_codeButton setTitleColor:Color_indigo forState:UIControlStateNormal];
+    [_backView addSubview:_codeButton];
+    
+    _codeTextField =  [[UITextField alloc]initWithFrame:CGRectMake(CGRectGetMaxX(_codeLabel.frame), CGRectGetMinY(_codeLabel.frame), kScreenWidth - CGRectGetWidth(_codeLabel.frame) - CGRectGetWidth(_codeButton.frame), CGRectGetHeight(_codeLabel.frame))];
+    _codeTextField.placeholder = @"请输入验证码";
+    [_backView addSubview:_codeTextField];
+    
+    _determineButton  =[UIButton buttonWithType:UIButtonTypeCustom];
+    _determineButton.frame = CGRectMake(0, CGRectGetMaxY(_backView.frame) + 20/PxHeight, kScreenWidth , 55/PxHeight);
+    _determineButton.titleLabel.font = [UIFont systemFontOfSize:15.0];
+    [_determineButton setTitle:@"确定" forState:UIControlStateNormal];
+    _determineButton.backgroundColor = Color_indigo;
+    [self addSubview:_determineButton];
 }
 
 @end

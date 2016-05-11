@@ -21,9 +21,14 @@
             _sp.oldString = @"已绑定手机";
             _sp.oldtextString = [LoginDataTools shareGetLoginDate].userModel.UserPhone;
         }
+        _sp.codeString = @"验证码";
+    }
+    
+    if ([_type isEqualToString:@"绑定新手机"]) {
         _sp.updateString = @"新手机号:";
         _sp.updateTextString = @"请输入新手机号";
     }
+    
     if ([_type isEqualToString:@"修改密码"]) {
         _sp.oldString = @"账户:";
         _sp.oldtextString = [LoginDataTools shareGetLoginDate].userModel.LoginId;
@@ -37,9 +42,14 @@
             _sp.oldString = @"已绑邮箱:";
             _sp.oldtextString = [LoginDataTools shareGetLoginDate].userModel.UserEmail;
         }
-        _sp.updateString = @"新邮箱号:";
+        _sp.codeString = @"验证码";
+    }
+    
+    if ([_type isEqualToString:@"绑定新邮箱"]) {
+        _sp.updateString = @"新邮箱:";
         _sp.updateTextString = @"请输入新邮箱号";
     }
+    
     if ([_type isEqualToString:@"找回密码"]) {
         _sp.oldString = @"账户";
         _sp.oldtextString = [LoginDataTools shareGetLoginDate].userModel.LoginId;
@@ -48,11 +58,16 @@
     }
 
     self.view = _sp;
+    [self setNav];
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+
+    
+}
+-(void)setNav{
     self.navigationItem.title = _type;
     UIButton *backButton = [[UIButton alloc ]initWithFrame:CGRectMake(0, 0, 30, 30)];
     [backButton addTarget:self action:@selector(leftBar) forControlEvents:UIControlEventTouchUpInside];
@@ -62,11 +77,20 @@
     
     [_sp.determineButton addTarget:self action:@selector(determineButtonAction:) forControlEvents:UIControlEventTouchUpInside];
     [_sp.codeButton addTarget:self action:@selector(codeButtonAction:) forControlEvents:UIControlEventTouchUpInside];
-    
 }
 
 -(void)leftBar{
     [self.navigationController popViewControllerAnimated:YES];
+}
+
+//显示提示框
+- (void)p_showAlertView:(NSString *)title message:(NSString *)message
+{
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:nil];
+    [alertController addAction:okAction];
+    [UIView appearance].tintColor = Color_indigo;
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 -(void)codeButtonAction:(UIButton *)sender{
@@ -78,6 +102,20 @@
             NSString *returnValeu = [NSString stringWithFormat:@"%@",code];
             if ([returnValeu isEqualToString:@"0"]) {
                 [self p_showAlertView:@"验证码发送成功" message:nil];
+            }
+        } WithFailureBlock:^(NSError *error) {
+            [self p_showAlertView:@"当前网络不稳定" message:nil];
+        }];
+    }
+    
+    if ([_type isEqualToString:@"绑定新手机"]) {
+        NSLog(@"%@",_sp.updateTextField.text);
+        [[LoginDataTools shareGetLoginDate]EditPhoneGetCodeWithLoginId:_sp.updateTextField.text UserId:[LoginDataTools shareGetLoginDate].userModel.UserId Md5Code:[LoginDataTools shareGetLoginDate].userModel.Md5Code WithReturnValeuBlock:^(id code) {
+            NSString *returnValeu = [NSString stringWithFormat:@"%@",code];
+            if ([returnValeu isEqualToString:@"0"]) {
+                [self p_showAlertView:@"验证码发送成功" message:nil];
+            }else{
+                [self p_showAlertView:@"请输入正确手机号" message:nil];
             }
         } WithFailureBlock:^(NSError *error) {
             [self p_showAlertView:@"当前网络不稳定" message:nil];
@@ -96,7 +134,8 @@
     }
     
     if ([_type isEqualToString:@"认证邮箱"]) {
-        [[LoginDataTools shareGetLoginDate]EditDataGetCodeWithLoginId:loginID DataType:@"Email" Md5Code:md5 WithReturnValeuBlock:^(id code) {
+        NSLog(@"%@",_sp.oldtextString);
+        [[LoginDataTools shareGetLoginDate]EditDataGetCodeWithLoginId:_sp.oldtextString DataType:@"Email" Md5Code:md5 WithReturnValeuBlock:^(id code) {
             NSString *returnValeu = [NSString stringWithFormat:@"%@",code];
             if ([returnValeu isEqualToString:@"0"]) {
                 [self p_showAlertView:@"验证码发送成功" message:nil];
@@ -105,6 +144,21 @@
             [self p_showAlertView:@"当前网络不稳定" message:nil];
         }];
     }
+    
+     if ([_type isEqualToString:@"绑定新邮箱"]) {
+         NSLog(@"%@",_sp.updateTextField.text);
+         
+         [[LoginDataTools shareGetLoginDate]EditPhoneGetCodeWithLoginId:_sp.updateTextField.text UserId:[LoginDataTools shareGetLoginDate].userModel.UserId Md5Code:[LoginDataTools shareGetLoginDate].userModel.Md5Code WithReturnValeuBlock:^(id code) {
+             NSString *returnValeu = [NSString stringWithFormat:@"%@",code];
+             if ([returnValeu isEqualToString:@"0"]) {
+                 [self p_showAlertView:@"验证码发送成功" message:nil];
+             }else{
+                 [self p_showAlertView:@"请输入正确邮箱号" message:nil];
+             }
+         } WithFailureBlock:^(NSError *error) {
+             [self p_showAlertView:@"当前网络不稳定" message:nil];
+         }];
+     }
     
     if ([_type isEqualToString:@"找回密码"]) {
     [[LoginDataTools shareGetLoginDate]ResetPwdGetCodeLoginId:loginID WithReturnValeuBlock:^(id code) {
@@ -129,11 +183,26 @@
     if ([_type isEqualToString:@"更换手机"]) {
         if ([code isEqualToString:@""]){
             [self p_showAlertView:@"验证码为空" message:nil];
-        }else if ([passWord isEqualToString:@""]){
-            [self p_showAlertView:@"手机号为空" message:nil];
         }else{
             if ([[LoginDataTools shareGetLoginDate].code isEqualToString:code]) {
-                [[LoginDataTools shareGetLoginDate]EditPhoneWithUserId:[LoginDataTools shareGetLoginDate].userModel.UserId Phone:passWord WithReturnValeuBlock:^(id code) {
+                _type = @"绑定新手机";
+                [LoginDataTools shareGetLoginDate].code = @"";
+                [self loadView];
+                [self p_showAlertView:@"验证通过" message:nil];
+                
+            }else{
+                [self p_showAlertView:@"验证码错误" message:nil];
+            }
+        }
+    }else if ([_type isEqualToString:@"绑定新手机"]) {
+        if ([_sp.updateTextField.text isEqualToString:@""]) {
+            [self p_showAlertView:@"手机号为空" message:nil];
+        }else if ([code isEqualToString:@""]){
+            [self p_showAlertView:@"验证码为空" message:nil];
+        }else{
+            if ([[LoginDataTools shareGetLoginDate].code isEqualToString:code]) {
+                NSLog(@"%@",_sp.updateTextField.text);
+                [[LoginDataTools shareGetLoginDate]EditPhoneWithUserId:[LoginDataTools shareGetLoginDate].userModel.UserId Phone:_sp.updateTextField.text WithReturnValeuBlock:^(id code) {
                     
                     NSString *returnValeu = [NSString stringWithFormat:@"%@",code];
                     if ([returnValeu isEqualToString:@"0"]) {
@@ -141,7 +210,7 @@
                         [UserAccount SetUserAccout:passWord PassWord:[UserAccount PassWord]];
                         [LoginDataTools shareGetLoginDate].code = @"";
                     }
-
+                    
                 } WithFailureBlock:^(NSError *error) {
                     [self p_showAlertView:@"当前网络不稳定" message:nil];
                 }];
@@ -150,8 +219,7 @@
                 [self p_showAlertView:@"验证码错误" message:nil];
             }
         }
-    }
-    if ([_type isEqualToString:@"修改密码"]) {
+    } else if ([_type isEqualToString:@"修改密码"]) {
         if ([code isEqualToString:@""]){
             [self p_showAlertView:@"验证码为空" message:nil];
         }else if ([passWord isEqualToString:@""]){
@@ -180,14 +248,31 @@
             }
         }
     }
-    if ([_type isEqualToString:@"认证邮箱"]) {
-        if ([passWord isEqualToString:@""]){
-            [self p_showAlertView:@"邮箱为空" message:nil];
+    else if ([_type isEqualToString:@"认证邮箱"]) {
+        if ([code isEqualToString:@""]){
+            [self p_showAlertView:@"验证码为空" message:nil];
+        }else{
+            if ([[LoginDataTools shareGetLoginDate].code isEqualToString:code]) {
+                _type = @"绑定新邮箱";
+                [LoginDataTools shareGetLoginDate].code = @"";
+                [self loadView];
+                [self p_showAlertView:@"验证通过" message:nil];
+                
+            }else{
+                [self p_showAlertView:@"验证码错误" message:nil];
+            }
+        }
+
+    }
+    
+    else if ([_type isEqualToString:@"绑定新邮箱"]) {
+        if ([_sp.updateTextField.text isEqualToString:@""]) {
+            [self p_showAlertView:@"邮箱号为空" message:nil];
         }else if ([code isEqualToString:@""]){
             [self p_showAlertView:@"验证码为空" message:nil];
         }else{
             if ([[LoginDataTools shareGetLoginDate].code isEqualToString:code]) {
-               
+        
                 [[LoginDataTools shareGetLoginDate]EditEmailWithUserId:[LoginDataTools shareGetLoginDate].userModel.UserId Email:passWord WithReturnValeuBlock:^(id code) {
                     NSString *returnValeu = [NSString stringWithFormat:@"%@",code];
                     if ([returnValeu isEqualToString:@"0"]) {
@@ -197,14 +282,9 @@
                 } WithFailureBlock:^(NSError *error) {
                     [self p_showAlertView:@"当前网络不稳定" message:nil];
                 }];
-                
-            }else{
-                [self p_showAlertView:@"验证码错误" message:nil];
             }
         }
-
-    }
-    if ([_type isEqualToString:@"找回密码"]) {
+    }else if ([_type isEqualToString:@"找回密码"]) {
         if ([code isEqualToString:@""]){
             [self p_showAlertView:@"验证码为空" message:nil];
         }else if ([passWord isEqualToString:@""]){
@@ -235,15 +315,6 @@
     }
 }
 
-//显示提示框
-- (void)p_showAlertView:(NSString *)title message:(NSString *)message
-{
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:nil];
-    [alertController addAction:okAction];
-    [UIView appearance].tintColor = Color_indigo;
-    [self presentViewController:alertController animated:YES completion:nil];
-}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

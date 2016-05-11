@@ -13,6 +13,7 @@
 @property (nonatomic,strong)NSString *GoodsId;//	(商品Id)
 
 @property (nonatomic,strong)NSString *GoodsStore;//	(库存)
+
 @property (nonatomic,strong)NSString *UserId;// (所属用户Id)
 
 @property (nonatomic,strong)NSString *GoodsSales;// (销量)
@@ -33,9 +34,10 @@
 
 @property (nonatomic,strong)NSString *GoodsCurrentPrice;//	(现价)
 
-@property (nonatomic,strong)NSString *ApplyShopsId;//	(店铺Id)
+@property (nonatomic,strong)NSString *ApplyShopsId;//(店铺Id)
 
-@property (nonatomic,strong)NSString *ShopName;//	(店铺名称)
+@property (nonatomic,strong)NSString *ShopName;//(店铺名称)
 
-@property (nonatomic,strong)NSString *ShopLogo;// 	(店铺logo)
+@property (nonatomic,strong)NSString *ShopLogo;//(店铺logo)
+
 @end

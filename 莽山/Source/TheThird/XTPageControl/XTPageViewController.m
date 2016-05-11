@@ -28,7 +28,7 @@
 
 @implementation XTPageViewController
 
-static CGFloat kXTDefaultTabBarHeight = 45;
+//static CGFloat kXTDefaultTabBarHeight = 45;
 
 - (instancetype)init {
     if (self = [super init]) {

@@ -27,4 +27,24 @@
     WithReturnValeuBlock:(ReturnValueBlock) block
         WithFailureBlock:(FailureBlock) failureBlock;
 
+//商品列表查询
+-(void)GoodsDetailWithGoodsId:(NSString *)GoodsId
+                     UserId:(NSString *)UserId
+    WithReturnValeuBlock:(ReturnValueBlock) block
+        WithFailureBlock:(FailureBlock) failureBlock;
+
+//推荐商品查询
+-(void)RecommendGoodsWithShopId:(NSString *)ShopId
+                      pageIndex:(NSInteger)pageIndex
+                       pageSize:(NSInteger)pageSize
+            WithReturnValeuBlock:(ReturnValueBlock) block
+                WithFailureBlock:(FailureBlock) failureBlock;
+
+//根据店铺或商品名称查店铺
+-(void)GetShopByNameWithName:(NSString *)Name
+                      pageIndex:(NSInteger)pageIndex
+                       pageSize:(NSInteger)pageSize
+           WithReturnValeuBlock:(ReturnValueBlock) block
+               WithFailureBlock:(FailureBlock) failureBlock;
+
 @end

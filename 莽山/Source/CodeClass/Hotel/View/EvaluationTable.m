@@ -104,9 +104,6 @@
         footButton.backgroundColor = [UIColor whiteColor];
         [footButton setTitle:@"查看更多评论" forState:UIControlStateNormal];
         [footButton setTitleColor:Color_indigo forState:UIControlStateNormal];
-        UILabel *lineLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, 1)];
-        lineLabel.backgroundColor = Color_back;
-        [footButton addSubview:lineLabel];
         
         UILabel *lineLabel1 = [[UILabel alloc]initWithFrame:CGRectMake(0, CGRectGetHeight(footButton.frame) - 1, kScreenWidth, 1)];
         lineLabel1.backgroundColor = Color_back;

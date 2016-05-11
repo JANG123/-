@@ -24,19 +24,20 @@
     self.backgroundColor = [UIColor colorWithRed:76/255.0 green:76/255.0 blue:76/255.0 alpha:1.0];
     
     _searchBar = [[UISearchBar alloc]initWithFrame:CGRectMake(25/PxWidth, 40/PxHeight, kScreenWidth - 50/PxWidth, 38/PxHeight)];
-//    [[_searchBar.subviews objectAtIndex:0]removeFromSuperview];
-//    
-//    for (UIView *subview in _searchBar.subviews) {
-//            if ([subview isKindOfClass:NSClassFromString(@"UISearchBarBackground")]) {
-//                [subview removeFromSuperview];
-//                break;
-//            }
-//    }
+    
+    UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"whiteColor"]];
+    [_searchBar insertSubview:imageView atIndex:1];
     _searchBar.placeholder = @"搜索酒店";
-    _searchBar.backgroundColor = [UIColor colorWithRed:204/255.0 green:204/255.0 blue:204/255.0 alpha:1.0];
     [_searchBar.layer setMasksToBounds:YES];
     [_searchBar.layer setCornerRadius:19/PxHeight];
+    [_searchBar.layer setBorderWidth:1.0]; //边框宽度
+    CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+    CGColorRef colorref = CGColorCreate(colorSpace,(CGFloat[]){ 200/255.0, 200/255.0, 200/255.0, 1 });
+    [_searchBar.layer setBorderColor:colorref];//边框颜色
     [self addSubview:_searchBar];
+    
+    
+    
     
     _allButton = [UIButton buttonWithType:UIButtonTypeCustom];
     _allButton.frame = CGRectMake(170/PxWidth, CGRectGetMaxY(_searchBar.frame) + 75/PxHeight, 75/PxWidth, 75/PxWidth);

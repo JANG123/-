@@ -12,7 +12,7 @@
 #import "DetailsTableViewController.h"
 #import "GoodViewController.h"
 @interface MallTableViewController ()<TypeDetailsViewDelegate>
-
+@property (nonatomic,strong)NSArray *idArr;
 @end
 
 @implementation MallTableViewController
@@ -20,6 +20,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"cell"];
+    _idArr = [NSArray array];
     [self p_data];
 }
 
@@ -32,7 +33,10 @@
 -(void)p_data{
 
     [[GoodsDateTolls shareGetGoodsDate]GetPartitionAllWithEcologicalId:@"1" WithReturnValeuBlock:^(id code) {
-    
+        _idArr = code;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.tableView reloadData];
+        });
     } WithFailureBlock:^(NSError *error) {
     
     }];
@@ -48,7 +52,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 
-    return 5;
+    return _idArr.count + 1;
 }
 
 
@@ -67,8 +71,73 @@
         [self p_addTarget:mv];
         [cell addSubview:mv];
     }else{
-    TypeDetailsView *typeDetailsView = [[TypeDetailsView alloc]initWithFrame:CGRectMake(0, 18/PxHeight, kScreenWidth, 454/PxHeight)];
+        TypeDetailsView *typeDetailsView = [[TypeDetailsView alloc]initWithFrame:CGRectMake(0, 18/PxHeight, kScreenWidth, 454/PxHeight)];
         typeDetailsView.delegate = self;
+        typeDetailsView.titleLabel.text = [_idArr[indexPath.row -1] objectForKey:@"PartitionName"];
+        [[GoodsDateTolls shareGetGoodsDate] ListGoodsWithName:@"" OrderName:@"" TypeId:@"" pageIndex:@"" pageSize:@"5" ShopId:@"" EcologicalId:@"1" PartitionId:[_idArr[indexPath.row -1] objectForKey:@"PartitionId"] WithReturnValeuBlock:^(id code) {
+            NSArray *arr = code;
+            if (arr.count<5) {
+                for (int i = 5; i > arr.count; i--) {
+                    switch (i) {
+                        case 1:typeDetailsView.good1ImageView.image = [UIImage imageNamed:@"更多产品.png"];
+                            break;
+                        case 2:typeDetailsView.good2ImageView.image = [UIImage imageNamed:@"更多产品.png"];
+                            break;
+                        case 3:typeDetailsView.good3ImageView.image = [UIImage imageNamed:@"更多产品.png"];
+                            break;
+                        case 4:typeDetailsView.good4ImageView.image = [UIImage imageNamed:@"更多产品.png"];
+                            break;
+                        case 5:typeDetailsView.good5ImageView.image = [UIImage imageNamed:@"更多产品.png"];
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+            for (int i =0; i < arr.count; i++) {
+                switch (i) {
+                    case 0:
+                    {
+                        typeDetailsView.singleTap1.goodInfo = arr[i];
+                        NSString *imageUrl = [NSString stringWithFormat:@"%@%@",URL_f_b,typeDetailsView.singleTap1.goodInfo.ImagePath];
+                        [typeDetailsView.good1ImageView sd_setImageWithURL:[NSURL URLWithString:imageUrl]];
+                    }
+                        break;
+                    case 1:
+                    {
+                        typeDetailsView.singleTap2.goodInfo = arr[i];
+                        NSString *imageUrl = [NSString stringWithFormat:@"%@%@",URL_f_b,typeDetailsView.singleTap2.goodInfo.ImagePath];
+                        [typeDetailsView.good2ImageView sd_setImageWithURL:[NSURL URLWithString:imageUrl]];
+                    }
+                        break;
+                    case 2:
+                    {
+                        typeDetailsView.singleTap3.goodInfo = arr[i];
+                        NSString *imageUrl = [NSString stringWithFormat:@"%@%@",URL_f_b,typeDetailsView.singleTap3.goodInfo.ImagePath];
+                        [typeDetailsView.good3ImageView sd_setImageWithURL:[NSURL URLWithString:imageUrl]];
+                    }
+                        break;
+                    case 3:
+                    {
+                        typeDetailsView.singleTap4.goodInfo = arr[i];
+                        NSString *imageUrl = [NSString stringWithFormat:@"%@%@",URL_f_b,typeDetailsView.singleTap4.goodInfo.ImagePath];
+                        [typeDetailsView.good4ImageView sd_setImageWithURL:[NSURL URLWithString:imageUrl]];
+                    }
+                        break;
+                    case 4:
+                    {
+                        typeDetailsView.singleTap5.goodInfo = arr[i];
+                        NSString *imageUrl = [NSString stringWithFormat:@"%@%@",URL_f_b,typeDetailsView.singleTap5.goodInfo.ImagePath];
+                        [typeDetailsView.good5ImageView sd_setImageWithURL:[NSURL URLWithString:imageUrl]];
+                    }
+                        break;
+                    default:
+                        break;
+                }
+            }
+        } WithFailureBlock:^(NSError *error) {
+            
+        }];
         [cell addSubview:typeDetailsView];
     }
     cell.backgroundColor = Color_back;
@@ -89,8 +158,17 @@
 }
 
 -(void)shareImageAction:(id)sender{
-    GoodViewController *gv = [[GoodViewController alloc]init];
-    [self.navigationController pushViewController:gv animated:YES];
+    UIGestureRecognizer *singleTap = sender;
+    if (singleTap.goodInfo.GoodsId.length > 0) {
+        [[GoodsDateTolls shareGetGoodsDate]GoodsDetailWithGoodsId:singleTap.goodInfo.GoodsId UserId:[LoginDataTools shareGetLoginDate].userModel.UserId WithReturnValeuBlock:^(id code) {
+            GoodViewController *gv = [[GoodViewController alloc]init];
+            gv.aGoodsDetaile = code;
+            [self.navigationController pushViewController:gv animated:YES];
+        } WithFailureBlock:^(NSError *error) {
+            
+        
+        }];
+    }
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -99,19 +177,8 @@
         case 0:
             Height = 278/PxHeight;
             break;
-        case 1:
-            Height = 472/PxHeight;
-            break;
-        case 2:
-            Height = 472/PxHeight;
-            break;
-        case 3:
-            Height = 472/PxHeight;
-            break;
-        case 4:
-            Height = 472/PxHeight;
-            break;
         default:
+            Height = 472/PxHeight;
             break;
     }
     return Height;

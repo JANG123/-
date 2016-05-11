@@ -19,6 +19,7 @@
     [super viewDidLoad];
     
     [self.tableView registerClass:[FarmHouseTableViewCell class] forCellReuseIdentifier:@"FarmHouseTableViewCell"];
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -35,7 +36,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     
-    return 4;
+    return 20;
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -48,7 +49,7 @@
     if(!cell) {
         cell = [[FarmHouseTableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"FarmHouseTableViewCell"];
     }
-    NSString *imageStr = [NSString stringWithFormat:@"%ld%ld%ld",indexPath.row +1,indexPath.row +1,indexPath.row +1];
+    NSString *imageStr = [NSString stringWithFormat:@"%ld%ld%ld",indexPath.row%4 +1,indexPath.row%4 +1,indexPath.row%4 +1];
     UIImageView *goodImageView = [[UIImageView alloc]initWithFrame:CGRectMake(-50, 0, kScreenWidth, 230/PxHeight)];
     goodImageView.image = [UIImage imageNamed:imageStr];
     [cell setBackgroundView:goodImageView];
@@ -61,6 +62,27 @@
     [self.navigationController pushViewController:fv animated:YES];
 }
 
+
+//tableView的代理方法。
+-(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    if (indexPath.row > _Offset) {
+        
+        cell.center = CGPointMake(cell.center.x, cell.center.y + Animation_Y/PxHeight);
+        POPBasicAnimation *anBasic = [POPBasicAnimation animationWithPropertyNamed:kPOPLayerPositionY];
+        anBasic.toValue = @(cell.center.y - Animation_Y/PxHeight);
+        anBasic.beginTime = CACurrentMediaTime();
+        [cell pop_addAnimation:anBasic forKey:@"position"];
+    }
+    
+    _Offset = indexPath.row ;
+    
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    self.isApper = true;
+}
 
 /*
 // Override to support conditional editing of the table view.

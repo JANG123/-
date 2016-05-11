@@ -325,16 +325,16 @@ static NSString * const headerIdentifier = @"headerIdentifier";
     
     if (self.OutDateArray.count == 0) {
         /**
-         *  选择出团
+         *  选择入住
          */
         self.OutDateArray =@[array[0],array[1],str];
         [self.collectionView reloadData];
-        [self showAlertController];
+//        [self showAlertController];
         [_promptButton setTitle:@"请选择离店时间" forState:UIControlStateNormal];
         
     }else{
         /**
-         *  选择反团
+         *  选择离店
          */
         NSArray *listArray = @[ array[0], array[1], str];
         NSInteger p_0 = [listArray componentsJoinedByString:@""].intValue;
@@ -342,7 +342,9 @@ static NSString * const headerIdentifier = @"headerIdentifier";
         
         if (p_0 < p_1) {
             
-            [SVProgressHUD showErrorWithStatus:@"选择离店日期不能早于入住日期!" duration:1.5];
+            //[SVProgressHUD showErrorWithStatus:@"选择离店日期不能早于入住日期!" duration:1.5];
+            self.OutDateArray =@[array[0],array[1],str];
+            [self.collectionView reloadData];
             return;
             
         }else{
@@ -350,6 +352,18 @@ static NSString * const headerIdentifier = @"headerIdentifier";
             self.selectedData = listArray;
             [self.collectionView reloadData];
             _promptButton.hidden = YES;
+            [self dismissViewControllerAnimated:YES completion:^{
+                
+                if (_OutDateArray.count > 0 && _selectedData.count > 0) {
+                    
+                    if (self.selectedDate) {
+                        
+                        self.selectedDate(_OutDateArray,_selectedData);
+                    }
+                    
+                }
+                
+            }];
             
         }
         
@@ -421,14 +435,14 @@ static NSString * const headerIdentifier = @"headerIdentifier";
 
     [self dismissViewControllerAnimated:YES completion:^{
         
-        if (_OutDateArray.count > 0 && _selectedData.count > 0) {
-            
-            if (self.selectedDate) {
-                
-                self.selectedDate(_OutDateArray,_selectedData);
-            }
-            
-        }
+//        if (_OutDateArray.count > 0 && _selectedData.count > 0) {
+//            
+//            if (self.selectedDate) {
+//                
+//                self.selectedDate(_OutDateArray,_selectedData);
+//            }
+//            
+//        }
     
     }];
 }

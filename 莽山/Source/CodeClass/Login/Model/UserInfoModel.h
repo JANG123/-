@@ -30,4 +30,5 @@
 @property (nonatomic,strong)NSString *AddressName;
 @property (nonatomic,strong)NSString *LogId;
 @property (nonatomic,strong)NSString *Md5Code;
+@property (nonatomic,strong)NSString *ImageName;
 @end

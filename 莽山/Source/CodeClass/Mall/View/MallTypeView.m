@@ -26,7 +26,7 @@
     [_typeButton.layer setMasksToBounds:YES];
     [_typeButton.layer setCornerRadius:75/PxWidth/2];
     [self addSubview:_typeButton];
-    CGRect rect = CGRectMake(CGRectGetMinX(_typeButton.frame), CGRectGetMaxY(_typeButton.frame) + 10/PxHeight, CGRectGetWidth(_typeButton.frame), 15/PxHeight);
+    CGRect rect = CGRectMake(0, CGRectGetMaxY(_typeButton.frame) + 10/PxHeight, x, 15/PxHeight);
     _typeLable = [UILabel setFrame:rect title:@"休闲" tintColor:[UIColor colorWithRed:91/255.0 green:91/255.0 blue:91/255.0 alpha:1.0] textAlignment:NSTextAlignmentCenter font:[UIFont systemFontOfSize:14.0]];
     [self addSubview:_typeLable];
 }

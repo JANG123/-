@@ -21,18 +21,18 @@
 
 -(void)p_setupView
 {
-    _storeNameLabel = [UILabel setFrame:CGRectMake(25/PxWidth, 10/PxHeight, kScreenWidth/2, 35/PxHeight) title:@"莽山原生态酒店" tintColor:[UIColor blackColor] textAlignment:NSTextAlignmentLeft font:[UIFont systemFontOfSize:17.0]];
+    _storeNameLabel = [UILabel setFrame:CGRectMake(25/PxWidth, 10/PxHeight, kScreenWidth/2, 32/PxHeight) title:@"莽山原生态酒店" tintColor:[UIColor blackColor] textAlignment:NSTextAlignmentLeft font:[UIFont systemFontOfSize:17.0]];
     [self addSubview:_storeNameLabel];
     _addressLabel = [UILabel setFrame:CGRectMake(CGRectGetMinX(_storeNameLabel.frame), CGRectGetMaxY(_storeNameLabel.frame), CGRectGetWidth(_storeNameLabel.frame), CGRectGetHeight(_storeNameLabel.frame)) title:@"湖南莽山森林公园附近500m" tintColor:[UIColor colorWithRed:91/255.0 green:91/255.0 blue:91/255.0 alpha:1.0] textAlignment:NSTextAlignmentLeft font:[UIFont systemFontOfSize:14.0]];
     [self addSubview:_addressLabel];
     _phoneButton = [UIButton buttonWithType:UIButtonTypeCustom];
     _phoneButton.frame = CGRectMake(kScreenWidth - 65/PxWidth, 15/PxHeight, 40/PxWidth, 40/PxWidth);
-    [_phoneButton addTarget:self action:@selector(phoneAction:) forControlEvents:UIControlEventTouchUpInside];
     [_phoneButton setImage:[UIImage imageNamed:@"电话"] forState:UIControlStateNormal];
     [self addSubview:_phoneButton];
-    UILabel *lineLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(_addressLabel.frame), kScreenWidth, 1)];
+    UILabel *lineLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(_addressLabel.frame) + 6/PxHeight, kScreenWidth, 1)];
     lineLabel.backgroundColor = Color_back;
     [self addSubview:lineLabel];
+    
     
     
     _inButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -40,11 +40,24 @@
     [_inButton addTarget:self action:@selector(dataButtonAction:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:_inButton];
 
-    UILabel *inTextLabel = [UILabel setFrame:CGRectMake(0, 5/PxHeight, CGRectGetWidth(_inButton.frame), CGRectGetHeight(_inButton.frame)/2 - 5/PxHeight) title:@"入住" tintColor:[UIColor colorWithRed:102/255.0 green:102/255.0 blue:102/255.0 alpha:1.0] textAlignment:NSTextAlignmentCenter font:[UIFont systemFontOfSize:17.0]];
+    UILabel *inTextLabel = [UILabel setFrame:CGRectMake(0, 10/PxHeight, CGRectGetWidth(_inButton.frame), (CGRectGetHeight(_inButton.frame) - 10/PxHeight)/2) title:@"入住" tintColor:[UIColor colorWithRed:102/255.0 green:102/255.0 blue:102/255.0 alpha:1.0] textAlignment:NSTextAlignmentCenter font:[UIFont systemFontOfSize:15.0]];
     [_inButton addSubview:inTextLabel];
     
-    _inLabel = [UILabel setFrame:CGRectMake(0, CGRectGetMaxY(inTextLabel.frame) + 5/PxHeight, CGRectGetWidth(inTextLabel.frame), CGRectGetHeight(inTextLabel.frame)/2) title:@"2016.04.15" tintColor:Color_indigo textAlignment:NSTextAlignmentCenter font:[UIFont systemFontOfSize:17.0]];
+    _inLabel = [UILabel setFrame:CGRectMake(0, CGRectGetMaxY(inTextLabel.frame) + 5/PxHeight, CGRectGetWidth(inTextLabel.frame), CGRectGetHeight(inTextLabel.frame)/2) title:@"2016.04.15" tintColor:Color_indigo textAlignment:NSTextAlignmentCenter font:[UIFont systemFontOfSize:15.0]];
     [_inButton addSubview:_inLabel];
+    
+    _dayButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    _dayButton.frame = CGRectMake(kScreenWidth/2 - 32/PxWidth, CGRectGetMaxY(lineLabel.frame) + 10/PxHeight, 64/PxWidth, 20/PxHeight);
+    [_dayButton setBackgroundImage:[UIImage imageNamed:@"day"] forState:UIControlStateNormal];
+    [_dayButton setTitle:@"共1晚" forState:UIControlStateNormal];
+    [_dayButton setTitleColor:[UIColor colorWithRed:102/255.0 green:102/255.0 blue:102/255.0 alpha:1.0] forState:UIControlStateNormal];
+    _dayButton.titleLabel.font = [UIFont systemFontOfSize:10.0];
+    [self addSubview:_dayButton];
+    
+    UILabel *lineLabel3 = [[UILabel alloc]initWithFrame:CGRectMake(kScreenWidth/2 -0.5 , CGRectGetMaxY(_dayButton.frame) + 5/PxHeight, 1, 30/PxHeight)];
+    lineLabel3.backgroundColor = [UIColor colorWithRed:178/255.0 green:178/255.0 blue:178/255.0 alpha:1.0];
+    [self addSubview:lineLabel3];
+    
     
     
     _outButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -52,10 +65,10 @@
     [_outButton addTarget:self action:@selector(dataButtonAction:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:_outButton];
     
-    UILabel *outTextLabel = [UILabel setFrame:CGRectMake(0, 5/PxHeight, CGRectGetWidth(_outButton.frame), CGRectGetHeight(_outButton.frame)/2 - 5/PxHeight) title:@"离店" tintColor:[UIColor colorWithRed:102/255.0 green:102/255.0 blue:102/255.0 alpha:1.0] textAlignment:NSTextAlignmentCenter font:[UIFont systemFontOfSize:17.0]];
+    UILabel *outTextLabel = [UILabel setFrame:CGRectMake(0, 10/PxHeight, CGRectGetWidth(_inButton.frame), (CGRectGetHeight(_inButton.frame) - 10/PxHeight)/2) title:@"离店" tintColor:[UIColor colorWithRed:102/255.0 green:102/255.0 blue:102/255.0 alpha:1.0] textAlignment:NSTextAlignmentCenter font:[UIFont systemFontOfSize:15.0]];
     [_outButton addSubview:outTextLabel];
     
-    _outLabel = [UILabel setFrame:CGRectMake(0, CGRectGetMaxY(outTextLabel.frame) + 5/PxHeight, CGRectGetWidth(outTextLabel.frame), CGRectGetHeight(outTextLabel.frame)/2) title:@"2016.04.16" tintColor:Color_indigo textAlignment:NSTextAlignmentCenter font:[UIFont systemFontOfSize:17.0]];
+    _outLabel = [UILabel setFrame:CGRectMake(0, CGRectGetMaxY(inTextLabel.frame) + 5/PxHeight, CGRectGetWidth(inTextLabel.frame), CGRectGetHeight(inTextLabel.frame)/2) title:@"2016.04.16" tintColor:Color_indigo textAlignment:NSTextAlignmentCenter font:[UIFont systemFontOfSize:15.0]];
     [_outButton addSubview:_outLabel];
     
     
