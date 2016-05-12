@@ -11,15 +11,27 @@
 #import "OrderTableViewController.h"
 
 @interface FarmHouseViewController ()<UIScrollViewDelegate,XTPageViewControllerDataSource,EvaluationTableDelegate>
-@property (nonatomic,strong)UIScrollView *backView;
-@property (nonatomic,strong)NSMutableArray *imageArr;
-@property (nonatomic,strong)NSMutableArray *mainGoodArr;
-@property (nonatomic,strong)StoreView *sv;
-@property (nonatomic,strong)UILabel *priceLabel;
-@property (nonatomic,strong)UILabel *recommenTextLabel;
-@property (nonatomic,strong)UIButton *collectionButton;
-@property (nonatomic,strong)UIButton *buyButton;
-@property (nonatomic,strong)UIButton *reservationButton;
+@property (nonatomic,strong)UIScrollView *backView; //背景ScrollView
+
+@property (nonatomic,strong)SDCycleScrollView *mainCycleScrollView;//轮播图
+
+@property (nonatomic,strong)NSMutableArray *imageArr; //商品轮播图，未加载，显示本地图片
+
+@property (nonatomic,strong)NSMutableArray *mainGoodArr; //商品轮播图
+
+@property (nonatomic,strong)StoreView *sv; //店铺信息View
+
+@property (nonatomic,strong)UILabel *priceLabel; //轮播图 商品价格
+
+@property (nonatomic,strong)UILabel *recommenTextLabel; //独家推荐
+
+@property (nonatomic,strong)EvaluationTable *evaluationTableView;//评价信息
+
+@property (nonatomic,strong)UIButton *collectionButton; //收藏
+
+@property (nonatomic,strong)UIButton *buyButton; //购买
+
+@property (nonatomic,strong)UIButton *reservationButton; //预定
 
 @end
 
@@ -40,13 +52,21 @@
     self.view.backgroundColor = [UIColor whiteColor];
     rectStatus = [[UIApplication sharedApplication] statusBarFrame];
     rectNav = self.navigationController.navigationBar.frame;
-    [self drawNav];
+    
+    [self drawNav];// 自定义 navigation
+    
+    // 修改navigation透明度
     [self.navigationController.navigationBar lt_setBackgroundColor:[UIColor clearColor]];
+    
+    //初始化轮播图
     [self drawCycleScrollView];
+    
+    //加载页面
     [self drawView];
 
 }
 
+//滑动顶部改变navigation透明效果
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     UIColor * color = [UIColor colorWithRed:0/255.0 green:175/255.0 blue:240/255.0 alpha:1];
@@ -66,28 +86,39 @@
             KFontColor_NavWhite
         }
     }];
-    if (offsetY > -rectNav.size.height-rectStatus.size.height) {
+    
+    //底部button 保持相对位置不变
+    if (offsetY > -K_rectNav-K_rectStatus) {
         _collectionButton.frame =  CGRectMake(0, kScreenHeight - 75/PxHeight + offsetY , kScreenWidth/3, 75/PxHeight);
     }else{
         _collectionButton.frame =  CGRectMake(0, kScreenHeight - rectNav.size.height - rectStatus.size.height - 75/PxHeight, kScreenWidth/3, 75/PxHeight);
     }
+    
     _buyButton.frame =  CGRectMake(CGRectGetMaxX(_collectionButton.frame), CGRectGetMinY(_collectionButton.frame), kScreenWidth/3, 75/PxHeight);
+    
     _reservationButton.frame = CGRectMake(CGRectGetMaxX(_buyButton.frame), CGRectGetMinY(_buyButton.frame), kScreenWidth/3, 75/PxHeight);
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:YES];
+    
+    //进入页面修改 navigation 字体颜色，及背景
     KFontColor_NavWhite
+    
     [self.navigationController.navigationBar setShadowImage:[UIImage new]];
 }
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    
+    //离开页面修改 navigation 字体颜色，及背景
     KFontColor_NavBlackColor
+    
     [self.navigationController.navigationBar lt_reset];
 }
 
+// 自定义 navigation
 -(void)drawNav{
     self.navigationItem.title = @"莽山原生态农家乐园";
     UIButton *backButton = [[UIButton alloc ]initWithFrame:CGRectMake(0, 0, 30, 30)];
@@ -97,6 +128,7 @@
     self.navigationItem.leftBarButtonItem = backItem;
 }
 
+//初始化轮播图
 -(void)drawCycleScrollView{
     if (_imageArr.count == 0) {
         // 主循环滚动图
@@ -113,10 +145,11 @@
     logoView.image = [UIImage imageNamed:@"钱"];
     [_mainCycleScrollView addSubview:logoView];
     
-    _priceLabel = [UILabel setFrame:CGRectMake(CGRectGetMaxX(logoView.frame), CGRectGetMinY(logoView.frame), 100/PxWidth, CGRectGetHeight(logoView.frame)) title:@"￥88/人" tintColor:[UIColor whiteColor] textAlignment:NSTextAlignmentLeft font:[UIFont systemFontOfSize:14.0]];
+    _priceLabel = [UILabel setFrame:CGRectMake(CGRectGetMaxX(logoView.frame), CGRectGetMinY(logoView.frame), 100/PxWidth, CGRectGetHeight(logoView.frame)) title:@"88/人" tintColor:[UIColor whiteColor] textAlignment:NSTextAlignmentLeft font:[UIFont systemFontOfSize:14.0]];
     [_mainCycleScrollView addSubview:_priceLabel];
 }
 
+//加载页面
 -(void)drawView{
     _sv = [[StoreView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(_mainCycleScrollView.frame), kScreenWidth, 172/PxHeight)];
     _sv.storeNameLabel.text = @"莽山原生态农家乐园";
@@ -132,7 +165,7 @@
     _recommenTextLabel.numberOfLines = 0;
     [self.view addSubview:_recommenTextLabel];
     
-    
+    //用户评价
     _evaluationTableView = [[EvaluationTable alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(_recommenTextLabel.frame), kScreenWidth, 600/PxHeight)];
     [self.view addSubview:_evaluationTableView];
     _evaluationTableView.type = YES;
@@ -166,6 +199,7 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
+//进入点菜界面
 -(void)buyButtonAction:(UIButton *)sender{
     _numberOfPages = 4;
     type = YES;
@@ -236,6 +270,7 @@
     }
 }
 
+//用户评价详情页
 -(void)foodButtonAction:(id)sender{
     type = NO;
     _numberOfPages = 4;

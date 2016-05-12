@@ -366,10 +366,86 @@ static LoginDataTools *lData;
     }];
 }
 
+//订单查询
+-(void)UserOrderAllWithOrderStatus:(NSString *)OrderStatus pageIndex:(NSInteger)pageIndex pageSize:(NSInteger)pageSize ReturnValeuBlock:(ReturnValueBlock)block WithFailureBlock:(FailureBlock)failureBlock{
+    NSString *urlString = [NSString stringWithFormat:@"%@%@?UserId=%@&Md5Code=%@&OrderStatus=%@&pageIndex=%ld&pageSize=%ld",URL_api,URL_UserOrderAll,_userModel.UserId,_userModel.Md5Code,OrderStatus,pageIndex,pageSize];
+    
+    [AFNDataTools_JYT NetRequestGetWithUrl:urlString WithReturnValeuBlock:^(id code) {
+        
+        NSDictionary *dict = (NSDictionary *)code;
+        NSNumber *longNumber = [NSNumber numberWithLong:[[dict objectForKey:@"ReturnValue"] longLongValue]];
+        NSString *ReturnValue = [longNumber stringValue];
+        NSMutableArray *tempArr = [NSMutableArray array];
+        if ([ReturnValue isEqualToString:@"0"]) {
+            for (NSDictionary *d in [dict objectForKey:@"Items"] ) {
+                OrderModel *aOrder = [OrderModel mj_objectWithKeyValues:d];
+                [tempArr addObject:aOrder];
+            }
+        }
+        block(tempArr);
+        
+    } WithFailureBlock:^(NSError *error) {
+        failureBlock(error);
+    }];
+}
 
 
+//取消订单
+-(void)CloseOrderWithOrderId:(NSString *)OrderId ReturnValeuBlock:(ReturnValueBlock)block WithFailureBlock:(FailureBlock)failureBlock{
+    NSString *urlString = [NSString stringWithFormat:@"%@%@?UserId=%@&Md5Code=%@&OrderId=%@",URL_api,URL_CloseOrder,_userModel.UserId,_userModel.Md5Code,OrderId];
+    
+    [AFNDataTools_JYT NetRequestGetWithUrl:urlString WithReturnValeuBlock:^(id code) {
+        
+        NSDictionary *dict = (NSDictionary *)code;
+        NSNumber *longNumber = [NSNumber numberWithLong:[[dict objectForKey:@"ReturnValue"] longLongValue]];
+        NSString *ReturnValue = [longNumber stringValue];
+        if ([ReturnValue isEqualToString:@"0"]) {
+            _userModel = [UserInfoModel mj_objectWithKeyValues:[dict objectForKey:@"View"]];
+        }
+        block(ReturnValue);
+        
+    } WithFailureBlock:^(NSError *error) {
+        failureBlock(error);
+    }];
+}
 
+//删除订单
+-(void)DeleteOrderWithOrderId:(NSString *)OrderId ReturnValeuBlock:(ReturnValueBlock)block WithFailureBlock:(FailureBlock)failureBlock{
+    NSString *urlString = [NSString stringWithFormat:@"%@%@?UserId=%@&Md5Code=%@&OrderId=%@",URL_api,URL_DeleteOrder,_userModel.UserId,_userModel.Md5Code,OrderId];
+    
+    [AFNDataTools_JYT NetRequestGetWithUrl:urlString WithReturnValeuBlock:^(id code) {
+        
+        NSDictionary *dict = (NSDictionary *)code;
+        NSNumber *longNumber = [NSNumber numberWithLong:[[dict objectForKey:@"ReturnValue"] longLongValue]];
+        NSString *ReturnValue = [longNumber stringValue];
+        if ([ReturnValue isEqualToString:@"0"]) {
+            _userModel = [UserInfoModel mj_objectWithKeyValues:[dict objectForKey:@"View"]];
+        }
+        block(ReturnValue);
+        
+    } WithFailureBlock:^(NSError *error) {
+        failureBlock(error);
+    }];
+}
 
+//确认收货
+-(void)TakeDeliveryWithOrderId:(NSString *)OrderId ReturnValeuBlock:(ReturnValueBlock)block WithFailureBlock:(FailureBlock)failureBlock{
+    NSString *urlString = [NSString stringWithFormat:@"%@%@?UserId=%@&Md5Code=%@&OrderId=%@",URL_api,URL_TakeDelivery,_userModel.UserId,_userModel.Md5Code,OrderId];
+    
+    [AFNDataTools_JYT NetRequestGetWithUrl:urlString WithReturnValeuBlock:^(id code) {
+        
+        NSDictionary *dict = (NSDictionary *)code;
+        NSNumber *longNumber = [NSNumber numberWithLong:[[dict objectForKey:@"ReturnValue"] longLongValue]];
+        NSString *ReturnValue = [longNumber stringValue];
+        if ([ReturnValue isEqualToString:@"0"]) {
+            _userModel = [UserInfoModel mj_objectWithKeyValues:[dict objectForKey:@"View"]];
+        }
+        block(ReturnValue);
+        
+    } WithFailureBlock:^(NSError *error) {
+        failureBlock(error);
+    }];
+}
 
 
 @end

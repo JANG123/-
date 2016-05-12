@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-
+//收藏商品
 @interface MyFavouriteModel : NSObject
 @property (nonatomic,strong)NSString *FavoId;
 @property (nonatomic,strong)NSString *GoodsName;

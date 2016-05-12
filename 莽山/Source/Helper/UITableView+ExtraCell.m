@@ -10,6 +10,7 @@
 
 @implementation UITableView (ExtraCell)
 
+//UITableView去掉最后分割线
 -(void)setExtraCellLineHidden: (UITableView *)tableView
 {
     UIView *view = [UIView new];

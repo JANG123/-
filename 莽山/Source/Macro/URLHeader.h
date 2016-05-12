@@ -129,7 +129,26 @@
  */
 #define URL_RenovateUser @"/MobileAPI/User/RenovateUser"
 
+/**
+ * 订单查询
+ */
+#define URL_UserOrderAll @"/MobileAPI/UserOrder/UserOrderAll"
 
+/**
+ * 取消订单(订单状态只能为已提交)
+ */
+#define URL_CloseOrder @"/MobileAPI/UserOrder/CloseOrder"
+
+/**
+ * 删除订单 (订单状态需要为取消或关闭)
+ */
+#define URL_DeleteOrder @"/MobileAPI/UserOrder/DeleteOrder"
+
+
+/**
+ * 确认收货 (订单状态需要为已发货)
+ */
+#define URL_TakeDelivery @"/MobileAPI/UserOrder/TakeDelivery"
 
 /**
  * 四、	商城:
@@ -158,6 +177,23 @@
  * 根据店铺或商品名称查店铺
  */
 #define URL_GetShopByName @"/MobileAPI/Goods/GetShopByName"
+
+
+/**
+ * 根据店铺或商品名称查店铺
+ */
+#define URL_GetShopList @"/MobileAPI/Shop/GetShopList"
+
+
+/**
+ * 查询首页商品
+ */
+#define URL_GetHomeAll @"/MobileAPI/GoodsType/GetHomeAll"
+
+/**
+ * 酒店或农家首页
+ */
+#define URL_GetShopList @"/MobileAPI/Shop/GetShopList"
 
 
 

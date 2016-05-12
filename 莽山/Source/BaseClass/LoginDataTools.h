@@ -11,6 +11,7 @@
 @interface LoginDataTools : NSObject
 
 @property (nonatomic,strong)NSString *code;//验证码
+
 @property (nonatomic,strong)UserInfoModel *userModel;//用户登录信息
 
 +(LoginDataTools *)shareGetLoginDate;
@@ -123,7 +124,30 @@
                 WithFailureBlock: (FailureBlock) failureBlock;
 
 //刷新
--(void)RenovateUserWithReturnValeuBlock:(ReturnValueBlock)block WithFailureBlock:(FailureBlock)failureBlock;
+-(void)RenovateUserWithReturnValeuBlock:(ReturnValueBlock)block
+                       WithFailureBlock:(FailureBlock)failureBlock;
 
+
+//订单查询
+-(void)UserOrderAllWithOrderStatus:(NSString *)OrderStatus
+                         pageIndex:(NSInteger)pageIndex
+                          pageSize:(NSInteger)pageSize
+                  ReturnValeuBlock:(ReturnValueBlock)block
+                  WithFailureBlock:(FailureBlock)failureBlock;
+
+//取消订单
+-(void)CloseOrderWithOrderId:(NSString *)OrderId
+            ReturnValeuBlock:(ReturnValueBlock)block
+            WithFailureBlock:(FailureBlock)failureBlock;
+
+//删除订单
+-(void)DeleteOrderWithOrderId:(NSString *)OrderId
+            ReturnValeuBlock:(ReturnValueBlock)block
+            WithFailureBlock:(FailureBlock)failureBlock;
+
+//确认收货
+-(void)TakeDeliveryWithOrderId:(NSString *)OrderId
+            ReturnValeuBlock:(ReturnValueBlock)block
+            WithFailureBlock:(FailureBlock)failureBlock;
 
 @end

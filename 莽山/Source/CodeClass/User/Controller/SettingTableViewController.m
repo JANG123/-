@@ -10,7 +10,7 @@
 #import "SettingTableViewCell.h"
 #import "SetDetailsViewController.h"
 @interface SettingTableViewController ()<IQActionSheetPickerViewDelegate>
-@property (nonatomic,strong)UIButton *loginButton;
+@property (nonatomic,strong)UIButton *loginButton;//退出
 @end
 
 @implementation SettingTableViewController
@@ -65,7 +65,7 @@
 }
 
 -(void)viewWillAppear:(BOOL)animated{
-    
+    //进入设置页，获取最新用户信息
     [[LoginDataTools shareGetLoginDate]RenovateUserWithReturnValeuBlock:^(id code) {
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.tableView reloadData];
@@ -141,6 +141,7 @@
     return view;
 }
 
+//进入修改页面
 -(void)cellButtonAction:(UIButton *)sender{
 
     SetDetailsViewController *sdVC = [[SetDetailsViewController alloc]init];
@@ -219,9 +220,9 @@
     return @"";
 }
 
+//日期选中器
 -(void)datePickerAction:(UIButton *)sender{
     IQActionSheetPickerView *picker = [[IQActionSheetPickerView alloc] initWithTitle:@"Date Picker" delegate:self];
-
     [picker setActionSheetPickerStyle:IQActionSheetPickerStyleDatePicker];
     [picker show];
 }
@@ -232,6 +233,8 @@
     NSDateFormatter *dateformatter=[[NSDateFormatter alloc] init];
     [dateformatter setDateFormat:@"YYYY-MM-dd"];
     [dateformatter stringFromDate:date];
+    
+    //修改用户生日信息
     [[LoginDataTools shareGetLoginDate]EditBirthdayWithUserId:[LoginDataTools shareGetLoginDate].userModel.UserId Birthday:[dateformatter stringFromDate:date] WithReturnValeuBlock:^(id code) {
         [self p_showAlertView:@"修改成功" message:nil];
         [[LoginDataTools shareGetLoginDate]LoginWithLoginId:[UserAccount UserName] LoginPwd:[UserAccount PassWord] Ip:[NetWorkTolls getIPAddress] WithReturnValeuBlock:^(id code) {

@@ -10,11 +10,11 @@
 
 @interface UploadDataTools : NSObject
 
+//上传图片
 +(void)UploadImgWithImgStr:(UIImage *)ImgStr
                      UploadName:(NSString *)UploadName
                     UserId:(NSString *)UserId
           WithReturnValeuBlock: (ReturnValueBlock) block
               WithFailureBlock: (FailureBlock) failureBlock;
-
 
 @end

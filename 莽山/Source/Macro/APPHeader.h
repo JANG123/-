@@ -43,6 +43,9 @@
 #import "MyFavouriteModel.h"
 #import "MyShopModel.h"
 #import "ShopModel.h"
+#import "FarmHouseModel.h"
+#import "HotelModel.h"
+#import "OrderModel.h"
 
 
 #import "LoginDataTools.h"

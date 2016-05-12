@@ -80,6 +80,8 @@
                 NSString *returnValeu = [NSString stringWithFormat:@"%@",code];
                 if ([returnValeu isEqualToString:@"0"]) {
                     [self p_showAlertView:@"注册成功" message:nil];
+                   
+                    //注册成功，返回用户名，密码
                     _rBlock(loginID,passWord);
                     
                     [self dismissViewControllerAnimated:YES completion:nil];

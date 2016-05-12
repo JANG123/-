@@ -62,7 +62,10 @@
 
 @property (nonatomic,assign) NSInteger index;
 
-@property (nonatomic,strong)OrderSelectionView *osVC;;
+@property (nonatomic,strong)OrderSelectionView *osVC;
+
+@property (nonatomic,assign) BOOL first;
+@property (nonatomic,assign) BOOL firstNext;
 
 @end
 // 版权属于原作者

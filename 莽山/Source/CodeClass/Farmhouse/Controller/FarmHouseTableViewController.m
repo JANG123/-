@@ -10,7 +10,7 @@
 #import "FarmHouseTableViewCell.h"
 #import "FarmHouseViewController.h"
 @interface FarmHouseTableViewController ()
-
+@property (nonatomic,strong)NSMutableArray *dataArr;//酒店数据
 @end
 
 @implementation FarmHouseTableViewController
@@ -20,11 +20,25 @@
     
     [self.tableView registerClass:[FarmHouseTableViewCell class] forCellReuseIdentifier:@"FarmHouseTableViewCell"];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    
+    [self p_data];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+-(void)p_data{
+    _dataArr = [NSMutableArray array];
+    [[GoodsDateTolls shareGetGoodsDate]GetShopListWithEcologicalId:@"2" pageIndex:1 pageSize:10 WithReturnValeuBlock:^(id code) {
+        _dataArr = code;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.tableView reloadData];
+        });
+    } WithFailureBlock:^(NSError *error) {
+    
+    }];
 }
 
 #pragma mark - Table view data source
@@ -36,7 +50,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     
-    return 20;
+    return _dataArr.count;
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -49,15 +63,29 @@
     if(!cell) {
         cell = [[FarmHouseTableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"FarmHouseTableViewCell"];
     }
-    NSString *imageStr = [NSString stringWithFormat:@"%ld%ld%ld",indexPath.row%4 +1,indexPath.row%4 +1,indexPath.row%4 +1];
+    FarmHouseModel *aFaemHouse = _dataArr[indexPath.row];
+    
+    //商品背景图
     UIImageView *goodImageView = [[UIImageView alloc]initWithFrame:CGRectMake(-50, 0, kScreenWidth, 230/PxHeight)];
-    goodImageView.image = [UIImage imageNamed:imageStr];
+    [goodImageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",URL_f_b,aFaemHouse.ShopImage]]];
     [cell setBackgroundView:goodImageView];
+    
+    //商品名
+    cell.nameLabel.text = aFaemHouse.ShopName;
+    
+    //商品介绍
+    cell.titleLabel.text = aFaemHouse.ShopDescribe;
+    
+    //商品价格
+    cell.priceLabel.text = [NSString stringWithFormat:@"%@/人",aFaemHouse.ConsumptionAmount];
+    
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
 }
 
+
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    //进入详情页
     FarmHouseViewController *fv = [[FarmHouseViewController alloc]init];
     [self.navigationController pushViewController:fv animated:YES];
 }
@@ -65,7 +93,7 @@
 
 //tableView的代理方法。
 -(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath{
-    
+    //tableview 向下滑动加载，出现动画效果
     if (indexPath.row > _Offset) {
         
         cell.center = CGPointMake(cell.center.x, cell.center.y + Animation_Y/PxHeight);
@@ -77,11 +105,6 @@
     
     _Offset = indexPath.row ;
     
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
-    self.isApper = true;
 }
 
 /*

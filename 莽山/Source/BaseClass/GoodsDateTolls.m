@@ -133,5 +133,26 @@ static GoodsDateTolls *gData;
     }];
 }
 
+//酒店或农家首页
+-(void)GetShopListWithEcologicalId:(NSString *)EcologicalId pageIndex:(NSInteger)pageIndex pageSize:(NSInteger)pageSize WithReturnValeuBlock:(ReturnValueBlock)block WithFailureBlock:(FailureBlock)failureBlock{
+    NSString *urlString = [NSString stringWithFormat:@"%@%@?EcologicalId=%@&pageIndex=%ld&pageSize=%ld",URL_api,URL_GetShopList,EcologicalId,pageIndex,pageSize];
+    [AFNDataTools_JYT NetRequestGetWithUrl:urlString WithReturnValeuBlock:^(id code) {
+        NSDictionary *dict = (NSDictionary *)code;
+        NSNumber *longNumber = [NSNumber numberWithLong:[[dict objectForKey:@"ReturnValue"] longLongValue]];
+        NSString *ReturnValue = [longNumber stringValue];
+        NSMutableArray *tempArr = [NSMutableArray array];
+        if ([ReturnValue isEqualToString:@"0"]) {
+            for (NSDictionary *d in [dict objectForKey:@"Items"] ) {
+                FarmHouseModel *aFarmHouse = [FarmHouseModel mj_objectWithKeyValues:d];
+                [tempArr addObject:aFarmHouse];
+            }
+        }
+        block(tempArr);
+        
+    } WithFailureBlock:^(NSError *error) {
+        failureBlock(error);
+    }];
+}
+
 
 @end

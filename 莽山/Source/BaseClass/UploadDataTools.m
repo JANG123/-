@@ -48,6 +48,11 @@
                 if ([returnValue isEqualToString:@"0"]) {
                     block(returnValue);
                     NSLog(@"成功");
+                    [[LoginDataTools shareGetLoginDate]RenovateUserWithReturnValeuBlock:^(id code) {
+                        
+                    } WithFailureBlock:^(NSError *error) {
+                        
+                    }];
                 }
             } WithFailureBlock:^(NSError *error) {
                 

@@ -23,6 +23,7 @@
 }
 
 -(void)viewWillAppear:(BOOL)animated{
+    //page controllers管理器
     XTPageViewController *pageViewController = [[XTPageViewController alloc] initWithTabBarStyle:XTTabBarStyleCursorUnderline];
     pageViewController.typeString = @"首页";
     pageViewController.dataSource = self;

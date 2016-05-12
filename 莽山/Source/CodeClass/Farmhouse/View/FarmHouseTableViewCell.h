@@ -10,11 +10,11 @@
 
 @interface FarmHouseTableViewCell : UITableViewCell
 
-@property(nonatomic,strong)UILabel *nameLabel;
+@property(nonatomic,strong)UILabel *nameLabel; //店铺名
 
-@property(nonatomic,strong)UILabel *titleLabel;
+@property(nonatomic,strong)UILabel *titleLabel; //店铺介绍
 
-@property(nonatomic,strong)UILabel *priceLabel;
+@property(nonatomic,strong)UILabel *priceLabel; //店铺价格
 
 @property(nonatomic,strong)UIImageView *logoView;
 

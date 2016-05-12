@@ -14,6 +14,7 @@
 #import "UserOrderTableViewController.h"
 #import "CollectionTableViewController.h"
 #import "SettingTableViewController.h"
+
 @interface UserTableViewController ()<XTPageViewControllerDataSource,UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate> {
     NSInteger _numberOfPages;
 }
@@ -170,20 +171,35 @@
     return @"";
 }
 
+
 -(void)p_CellAddTarget:(UserOrderTableViewCell *)cell{
     [cell.paymentButton addTarget:self action:@selector(ButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+    cell.paymentButton.tag = 501;
     [cell.goodsButton addTarget:self action:@selector(ButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+    cell.goodsButton.tag = 502;
     [cell.evaluationButton addTarget:self action:@selector(ButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+    cell.evaluationButton.tag = 503;
     [cell.refundButton addTarget:self action:@selector(ButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+    cell.refundButton.tag = 504;
 }
 
 
 -(void)ButtonAction:(UIButton *)sender{
-    XTPageViewController *pageViewController = [[XTPageViewController alloc] initWithTabBarStyle:XTTabBarStyleCursorUnderline];
-    pageViewController.typeString = @"我的订单";
-    pageViewController.dataSource = self;
-    pageViewController.index = 1;
-    [self.navigationController pushViewController:pageViewController animated:YES];
+    
+    if (sender.tag == 504) {
+        //退款售后
+        
+        
+    }else{
+        //我的订单
+        
+        _numberOfPages = 4;
+        XTPageViewController *pageViewController = [[XTPageViewController alloc] initWithTabBarStyle:XTTabBarStyleCursorUnderline];
+        pageViewController.typeString = @"我的订单";
+        pageViewController.dataSource = self;
+        pageViewController.index = sender.tag - 500;
+        [self.navigationController pushViewController:pageViewController animated:YES];
+    }
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -247,19 +263,21 @@
 }
 
 - (UIViewController*)constrollerOfPage:(NSInteger)page {
-    UITableViewController * pageVC;
+    
     if (_numberOfPages == 4) {
-    pageVC = [[UserOrderTableViewController alloc]init];
-    }else if (_numberOfPages == 2){
+        UserOrderTableViewController * pageVC = [[UserOrderTableViewController alloc]init];
+        pageVC.index = page;
+        return pageVC;
+    }else {
         CollectionTableViewController *cv = [[CollectionTableViewController alloc]init];
         if (page == 0) {
             cv.typeStr = @"商品";
         }else if (page == 1){
             cv.typeStr = @"店铺";
         }
-        pageVC = cv;
+        return cv;
     }
-    return pageVC;
+    
 }
 
 

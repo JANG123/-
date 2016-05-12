@@ -9,10 +9,8 @@
 #import <UIKit/UIKit.h>
 
 @interface FarmHouseTableViewController : UITableViewController
-/// 上一个cell的下标
-@property (nonatomic, assign) long lastCellIndex;
-/// tableview是否已经显示完毕
-@property (nonatomic, assign) BOOL isApper;
 
+//tableview偏移量
 @property (nonatomic, assign) CGFloat Offset;
+
 @end

@@ -11,9 +11,18 @@
 @interface CollectionTableViewController : UITableViewController{
     UIButton *removeButton;
 }
+
+//状态标示 
 @property (nonatomic,strong)NSString *typeStr;
+
+//删除选中的cell
 @property (nonatomic,strong) NSMutableArray *selectedDic;
--(void)rightBarAction;
+
+//收藏数据集合
 @property (nonatomic,strong)NSMutableArray *dataArr;
+
+//pageIndex值
 @property (nonatomic,assign)NSInteger index;
+
+-(void)rightBarAction;
 @end

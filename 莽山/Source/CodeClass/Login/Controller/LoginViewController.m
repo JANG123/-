@@ -48,7 +48,8 @@
 
 -(void)regiestButtonAction:(UIButton *)sender{
     RegiestViewController *regiestVC = [[RegiestViewController alloc]init];
-    //[self p_setupProgressHud];
+
+    //注册成功，返回用户名，密码
     regiestVC.rBlock= ^(NSString *userName,NSString *passWord)
     {
         _lv.userTextField.text = userName;
@@ -73,6 +74,8 @@
             [self dismissViewControllerAnimated:YES completion:nil];
         }else if ([returnValeu isEqualToString:@"1001"]){
             [self p_showAlertView:@"密码错误" message:nil];
+        }else if ([returnValeu isEqualToString:@"1000"]){
+            [self p_showAlertView:@"用户不存在" message:nil];
         }
 
     } WithFailureBlock:^(NSError *error) {

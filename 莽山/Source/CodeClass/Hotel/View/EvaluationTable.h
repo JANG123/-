@@ -14,9 +14,13 @@
 @end
 
 @interface EvaluationTable : UIView<UITableViewDataSource,UITableViewDelegate>
+
 @property (nonatomic,strong)UITableView *tableView;
-@property (nonatomic,strong)UILabel *scoreLabel;
+
+@property (nonatomic,strong)UILabel *scoreLabel; 
+
 @property (nonatomic,strong)UILabel *numLabel;
+
 @property (nonatomic,strong)NSMutableArray *hightArr;
 
 @property (nonatomic,assign)BOOL type;

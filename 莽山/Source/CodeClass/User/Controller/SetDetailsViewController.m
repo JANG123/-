@@ -93,6 +93,8 @@
     [self presentViewController:alertController animated:YES completion:nil];
 }
 
+
+//发送验证码
 -(void)codeButtonAction:(UIButton *)sender{
     NSString *loginID = [LoginDataTools shareGetLoginDate].userModel.LoginId;
     NSString *md5 = [LoginDataTools shareGetLoginDate].userModel.Md5Code;
@@ -172,6 +174,8 @@
     }
 }
 
+
+//确认
 -(void)determineButtonAction:(UIButton *)sender{
     NSString *loginID = [LoginDataTools shareGetLoginDate].userModel.LoginId;
     NSString *code = [NSString stringWithFormat:@"%@",_sp.codeTextField.text];

@@ -13,6 +13,7 @@
 @interface HotelTableViewController ()
 @property (nonatomic,strong)UIButton *dateButton;
 @property (nonatomic,strong)UIButton *searchButton;
+@property (nonatomic,strong)NSMutableArray *dataArr;
 @end
 
 @implementation HotelTableViewController
@@ -25,6 +26,19 @@
     self.view.backgroundColor = Color_back;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     _Offset = 0;
+    [self p_data];
+}
+
+-(void)p_data{
+    _dataArr = [NSMutableArray array];
+    [[GoodsDateTolls shareGetGoodsDate]GetShopListWithEcologicalId:@"3" pageIndex:1 pageSize:10 WithReturnValeuBlock:^(id code) {
+        _dataArr = code;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.tableView reloadData];
+        });
+    } WithFailureBlock:^(NSError *error) {
+        
+    }];
 }
 
 -(void)p_addButton{
@@ -87,7 +101,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 
-    return 20;
+    return _dataArr.count;
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -96,14 +110,21 @@
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    HotelModel *aHotel = _dataArr[indexPath.row];
+    
     HoteTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"HoteTableViewCell" forIndexPath:indexPath];
     if(!cell) {
         cell = [[HoteTableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"HoteTableViewCell"];
     }
-    NSString *imageStr = [NSString stringWithFormat:@"%ldh",indexPath.row%4 +1];
+
     UIImageView *goodImageView = [[UIImageView alloc]initWithFrame:CGRectMake(-50, 0, kScreenWidth, 230/PxHeight)];
-    goodImageView.image = [UIImage imageNamed:imageStr];
+    [goodImageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",URL_f_b,aHotel.ShopImage]]];
     [cell setBackgroundView:goodImageView];
+
+    cell.nameLabel.text = aHotel.ShopName;
+    cell.titleLabel.text = aHotel.ShopDescribe;
+    cell.priceLabel.text = [NSString stringWithFormat:@"%@",aHotel.ConsumptionAmount];
+    
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     if (indexPath.row == 0) {
         cell.tuijianImageView.hidden = NO;

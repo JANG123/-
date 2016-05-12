@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-
+//收藏店铺
 @interface MyShopModel : NSObject
 @property (nonatomic,strong)NSString *ApplyShopsId;
 @property (nonatomic,strong)NSString *ShopStar;

@@ -14,6 +14,4 @@
     NSInteger _numberOfPages;
     BOOL type;
 }
-@property (nonatomic,strong)SDCycleScrollView *mainCycleScrollView;
-@property (nonatomic,strong)EvaluationTable *evaluationTableView;
 @end

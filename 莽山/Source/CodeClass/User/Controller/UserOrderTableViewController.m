@@ -11,6 +11,7 @@
 #import "ToEvaluateViewController.h"
 @interface UserOrderTableViewController ()<UIScrollViewDelegate>
 @property (nonatomic,assign)NSInteger cellInterger;
+@property (nonatomic,strong)NSMutableArray *dataArr;
 @end
 
 @implementation UserOrderTableViewController
@@ -27,11 +28,47 @@
     [self.view addSubview:removeButton];
     removeButton.hidden = YES;
     self.tableView.delegate = self;
+    [self.tableView setExtraCellLineHidden:self.tableView];
+    [self p_data];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+-(void)p_data{
+    _dataArr = [NSMutableArray array];
+    NSString *Status = [NSString string];
+    switch (_index) {
+        case 0:
+            Status = @"";
+            break;
+        case 1:
+            Status = @"notpay";
+            break;
+        case 2:
+            Status = @"notsign";
+            break;
+        case 3:
+            Status = @"noteval";
+            break;
+        default:
+            break;
+    }
+    [[LoginDataTools shareGetLoginDate]UserOrderAllWithOrderStatus:Status pageIndex:1 pageSize:5 ReturnValeuBlock:^(id code) {
+        _dataArr = code;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.tableView reloadData];
+        });
+    } WithFailureBlock:^(NSError *error) {
+        
+    }];
+
+}
+
+-(void)viewWillAppear:(BOOL)animated{
+
 }
 
 #pragma mark - Table view data source
@@ -41,7 +78,7 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return _cellInterger;
+    return _dataArr.count;
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -49,6 +86,7 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    //OrderModel *aOrder = _dataArr[indexPath.row];
     OrderUserTableViewCell *cell=nil;
     if (cell==nil) {
         cell= [tableView dequeueReusableCellWithIdentifier:@"OrderUserTableViewCell" forIndexPath:indexPath];
@@ -100,16 +138,15 @@
 
 -(UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-//    return UITableViewCellEditingStyleDelete;
     return UITableViewCellEditingStyleDelete | UITableViewCellEditingStyleInsert;
 }
 
 -(void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    _cellInterger = _cellInterger -1;
     [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
 }
 
+//删除按钮保持相对位置
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
     CGFloat offsetY = scrollView.contentOffset.y;
     if (offsetY > 0) {
@@ -130,8 +167,11 @@
     }else{
         removeButton.hidden = YES;
     }
+    
 }
 
+
+//删除
 - (void)rightBtnPressedWithSure:(UIButton *)sender{
     
     if ([sender.titleLabel.text isEqualToString:@"删除"]) {
@@ -162,7 +202,6 @@
         [self presentViewController:alertController animated:YES completion:nil];
         
     }
-    
 }
 
 //显示提示框

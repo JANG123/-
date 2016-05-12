@@ -47,4 +47,11 @@
            WithReturnValeuBlock:(ReturnValueBlock) block
                WithFailureBlock:(FailureBlock) failureBlock;
 
+//酒店或农家首页
+-(void)GetShopListWithEcologicalId:(NSString *)EcologicalId
+                         pageIndex:(NSInteger)pageIndex
+                          pageSize:(NSInteger)pageSize
+              WithReturnValeuBlock:(ReturnValueBlock) block
+                  WithFailureBlock:(FailureBlock) failureBlock;
+
 @end

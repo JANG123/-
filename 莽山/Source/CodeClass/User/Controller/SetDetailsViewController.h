@@ -9,5 +9,8 @@
 #import <UIKit/UIKit.h>
 
 @interface SetDetailsViewController : UIViewController
+
+//信息修改标示
 @property (nonatomic,strong)NSString *type;
+
 @end

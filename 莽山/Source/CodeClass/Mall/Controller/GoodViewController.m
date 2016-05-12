@@ -35,8 +35,6 @@
 -(void)loadView{
     _backView = [[UIScrollView alloc]initWithFrame:[[UIScreen mainScreen]bounds]];
     _backView.backgroundColor = [UIColor clearColor];
-    _backView.scrollEnabled = YES;
-    _backView.delegate = self;
     self.view = _backView;
 }
 
@@ -56,7 +54,8 @@
     _classCollectView.hidden = YES;
     _upButton.hidden = YES;
     _numberOfPages = 4;
-
+    _backView.scrollEnabled = YES;
+    _backView.delegate = self;
 }
 
 -(void)drawView{
@@ -78,31 +77,36 @@
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    UIColor * color = [UIColor colorWithRed:0/255.0 green:175/255.0 blue:240/255.0 alpha:1];
-    CGFloat offsetY = scrollView.contentOffset.y;
-    UIButton *tempButton = self.navigationItem.leftBarButtonItem.customView;
-    [UIView animateWithDuration:0.3 animations:^{
-        if (offsetY > 0 && offsetY < NAVBAR_CHANGE_POINT) {
-            [self.navigationController.navigationBar lt_setBackgroundColor:[UIColor colorWithRed:1 green:1 blue:1 alpha:offsetY/64.0]];
-        }else if (offsetY > NAVBAR_CHANGE_POINT) {
-            [self.navigationController.navigationBar lt_setBackgroundColor:[UIColor whiteColor]];
-            [tempButton setImage:[UIImage imageNamed:@"订单填写_返回"] forState:UIControlStateNormal];
-            KFontColor_NavBlackColor
+    if ([_backView isEqual:scrollView]) {
+        UIColor * color = [UIColor colorWithRed:0/255.0 green:175/255.0 blue:240/255.0 alpha:1];
+        CGFloat offsetY = scrollView.contentOffset.y;
+        NSLog(@"%lf",offsetY);
+        UIButton *tempButton = self.navigationItem.leftBarButtonItem.customView;
+        [UIView animateWithDuration:0.3 animations:^{
+            if (offsetY > 0 && offsetY < NAVBAR_CHANGE_POINT) {
+                [self.navigationController.navigationBar lt_setBackgroundColor:[UIColor colorWithRed:1 green:1 blue:1 alpha:offsetY/64.0]];
+            }else if (offsetY > NAVBAR_CHANGE_POINT) {
+                [self.navigationController.navigationBar lt_setBackgroundColor:[UIColor whiteColor]];
+                [tempButton setImage:[UIImage imageNamed:@"订单填写_返回"] forState:UIControlStateNormal];
+                KFontColor_NavBlackColor
+            }
+            else {
+                [self.navigationController.navigationBar lt_setBackgroundColor:[color colorWithAlphaComponent:0]];
+                [tempButton setImage:[UIImage imageNamed:@"返回"] forState:UIControlStateNormal];
+                KFontColor_NavWhite
+            }
+        }];
+        if (offsetY > -rectNav.size.height-rectStatus.size.height) {
+            _collectionButton.frame =  CGRectMake(0, kScreenHeight - 75/PxHeight + offsetY , kScreenWidth/2, 75/PxHeight);
+            _buyButton.frame =  CGRectMake(kScreenWidth/2, kScreenHeight - 75/PxHeight + offsetY , kScreenWidth/2, 75/PxHeight);
+            _upButton.frame = CGRectMake(kScreenWidth - 80/PxWidth, CGRectGetMinY(_buyButton.frame) - 100/PxHeight, 55/PxHeight, 55/PxHeight);
+            _upButton.hidden = NO;
+        }else{
+            _collectionButton.frame =  CGRectMake(0, kScreenHeight - rectNav.size.height - rectStatus.size.height - 75/PxHeight, kScreenWidth/2, 75/PxHeight);
+            _buyButton.frame =  CGRectMake(kScreenWidth/2, kScreenHeight - rectNav.size.height - rectStatus.size.height - 75/PxHeight, kScreenWidth/2, 75/PxHeight);
+            _upButton.frame = CGRectMake(kScreenWidth - 80/PxWidth, CGRectGetMinY(_buyButton.frame) - 100/PxHeight, 55/PxHeight, 55/PxHeight);
+            _upButton.hidden = YES;
         }
-        else {
-            [self.navigationController.navigationBar lt_setBackgroundColor:[color colorWithAlphaComponent:0]];
-            [tempButton setImage:[UIImage imageNamed:@"返回"] forState:UIControlStateNormal];
-            KFontColor_NavWhite
-        }
-    }];
-    if (offsetY > -rectNav.size.height-rectStatus.size.height) {
-        _collectionButton.frame =  CGRectMake(0, kScreenHeight - 75/PxHeight + offsetY , kScreenWidth/2, 75/PxHeight);
-        _buyButton.frame =  CGRectMake(kScreenWidth/2, kScreenHeight - 75/PxHeight + offsetY , kScreenWidth/2, 75/PxHeight);
-        _upButton.frame = CGRectMake(kScreenWidth - 80/PxWidth, CGRectGetMinY(_buyButton.frame) - 100/PxHeight, 55/PxHeight, 55/PxHeight);
-    }else{
-        _collectionButton.frame =  CGRectMake(0, kScreenHeight - rectNav.size.height - rectStatus.size.height - 75/PxHeight, kScreenWidth/2, 75/PxHeight);
-        _buyButton.frame =  CGRectMake(kScreenWidth/2, kScreenHeight - rectNav.size.height - rectStatus.size.height - 75/PxHeight, kScreenWidth/2, 75/PxHeight);
-        _upButton.frame = CGRectMake(kScreenWidth - 80/PxWidth, CGRectGetMinY(_buyButton.frame) - 100/PxHeight, 55/PxHeight, 55/PxHeight);
     }
 }
 
@@ -139,6 +143,7 @@
         
         _mainCycleScrollView = [SDCycleScrollView cycleScrollViewWithFrame:CGRectMake(0, -rectNav.size.height-rectStatus.size.height, kScreenWidth, 440/PxHeight) imageURLStringsGroup:_imageArr];
         [self.view addSubview:_mainCycleScrollView];
+        NSLog(@"%lf",CGRectGetMaxY(_mainCycleScrollView.frame));
     }
 }
 
@@ -329,7 +334,7 @@
 
 -(void)upButtonAction{
     [UIView animateWithDuration:0.5 animations:^{
-        _backView.contentOffset = CGPointMake(0, 0);
+        _backView.contentOffset = CGPointMake(0, -64);
     }];
 }
 
@@ -459,9 +464,11 @@
 {
     GoodsModel *aGood = _RecommendGoodsArr[indexPath.row];
     [[GoodsDateTolls shareGetGoodsDate]GoodsDetailWithGoodsId:aGood.GoodsId UserId:[LoginDataTools shareGetLoginDate].userModel.UserId WithReturnValeuBlock:^(id code) {
-        GoodViewController *gv = [[GoodViewController alloc]init];
-        gv.aGoodsDetaile = code;
-        [self.navigationController pushViewController:gv animated:YES];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            GoodViewController *gv = [[GoodViewController alloc]init];
+            gv.aGoodsDetaile = code;
+            [self.navigationController pushViewController:gv animated:YES];
+        });
     } WithFailureBlock:^(NSError *error) {
         
     }];

@@ -134,6 +134,7 @@
 -(void)rightBarAction:(UIBarButtonItem *)sender
 {
     if ([_typeString isEqualToString:@"我的订单"]) {
+        NSLog(@"%ld",self.currentPage);
         UserOrderTableViewController *tableviewController = [self.cachedControllers objectForKey:@(self.currentPage)];
         [tableviewController rightBarAction];
         
@@ -244,8 +245,19 @@
     [self.pageScrollView setPagingEnabled:YES];
     self.pageScrollView.delegate = self;
     [self.view addSubview:self.pageScrollView];
-    
-    self.forceToShowControllerWhenFirstTime = YES;
+    for (int i = 0; i < [self.dataSource numberOfPages]; i++) {
+        UIViewController *nextController = [self.dataSource constrollerOfPage:i];
+        [nextController willMoveToParentViewController:self];
+        [self addChildViewController:nextController];
+        [self.pageScrollView addSubview:nextController.view];
+        nextController.view.frame = CGRectMake(i * kScreenWidth, 0, kScreenWidth, self.pageScrollView.bounds.size.height);
+        [nextController didMoveToParentViewController:self];
+        
+        [self.cachedControllers setObject:nextController forKey:@(i)];
+    }
+   self.forceToShowControllerWhenFirstTime = YES;
+    _first = YES;
+    _firstNext = YES;
     [self.tabBar moveToIndex:_index];
 }
 
@@ -286,6 +298,7 @@
     if (self.dataSource) {
         NSInteger numberOfPages = [self.dataSource numberOfPages];
         self.pageScrollView.contentSize = CGSizeMake(numberOfPages * self.pageScrollView.bounds.size.width, self.pageScrollView.bounds.size.height);
+        self.pageScrollView.contentOffset = CGPointMake(kScreenWidth * _index, 0);
     }
 }
 
@@ -295,7 +308,14 @@
         self.forceToShowControllerWhenFirstTime = NO;
         self.pageScrollView.scrollEnabled = NO;
         
-        [self showNextController:nextIndex];
+        if (_index != 0 && _first) {
+            for (int i = 0; i < _index + 1; i++) {
+                [self showNextController:i];
+            }
+            _first = NO;
+        }else{
+         [self showNextController:nextIndex];
+        }
     } else {
         if (!self.disableScroll) {
             self.pageScrollView.scrollEnabled = NO;
@@ -314,6 +334,10 @@
 #pragma mark scrollview delegate
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
     NSInteger page = (NSInteger)(scrollView.contentOffset.x / scrollView.bounds.size.width + .5);
+    if (_index != 0 && _firstNext) {
+        self.nextIndex = _index;
+        _firstNext = NO;
+    }
     if (self.nextIndex != -1) {
         [self showNextController:self.nextIndex];
         self.nextIndex = -1;
@@ -337,16 +361,17 @@
     if ([CurrentSelectedCViewController isEqualToString:@"UserOrderTableViewController"]) {
         self.navigationItem.rightBarButtonItem.title = @"编辑";
         UserOrderTableViewController *tableviewController = [self.cachedControllers objectForKey:@(self.currentPage)];
-        [tableviewController rightBarAction];
+        //[tableviewController rightBarAction];
         [tableviewController.tableView setEditing:NO animated:YES];
     } else if ([CurrentSelectedCViewController isEqualToString:@"CollectionTableViewController"]){
         self.navigationItem.rightBarButtonItem.title = @"编辑";
         CollectionTableViewController *tableviewController = [self.cachedControllers objectForKey:@(self.currentPage)];
-        [tableviewController rightBarAction];
+        //[tableviewController rightBarAction];
         [tableviewController.tableView setEditing:NO animated:YES];
     }
     
     self.currentPage = nextPage;
+
     UIViewController *nextController = [self.cachedControllers objectForKey:@(nextPage)];
     if (nextController == nil) {
         nextController = [self.dataSource constrollerOfPage:nextPage];

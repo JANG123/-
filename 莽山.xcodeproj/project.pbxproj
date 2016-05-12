@@ -87,6 +87,9 @@
 		3E476F141CD9CB0600D20669 /* UserInfoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E476F131CD9CB0600D20669 /* UserInfoModel.m */; };
 		3E693B141CE2C3F200079E0C /* SearchView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E693B131CE2C3F200079E0C /* SearchView.m */; };
 		3E693B171CE31C5F00079E0C /* ShopModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E693B161CE31C5F00079E0C /* ShopModel.m */; };
+		3E693B1D1CE34A7000079E0C /* FarmHouseModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E693B1C1CE34A7000079E0C /* FarmHouseModel.m */; };
+		3E693B201CE34E2B00079E0C /* HotelModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E693B1F1CE34E2B00079E0C /* HotelModel.m */; };
+		3E693B231CE352BE00079E0C /* OrderModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E693B221CE352BE00079E0C /* OrderModel.m */; };
 		3E8E03241CD0913A00BB7F0D /* NSData+SDDataCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E8E03141CD0913A00BB7F0D /* NSData+SDDataCache.m */; };
 		3E8E03251CD0913A00BB7F0D /* TAAbstractDotView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E8E03171CD0913A00BB7F0D /* TAAbstractDotView.m */; };
 		3E8E03261CD0913A00BB7F0D /* TAAnimatedDotView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E8E03191CD0913A00BB7F0D /* TAAnimatedDotView.m */; };
@@ -378,6 +381,12 @@
 		3E693B131CE2C3F200079E0C /* SearchView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchView.m; sourceTree = "<group>"; };
 		3E693B151CE31C5F00079E0C /* ShopModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShopModel.h; sourceTree = "<group>"; };
 		3E693B161CE31C5F00079E0C /* ShopModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShopModel.m; sourceTree = "<group>"; };
+		3E693B1B1CE34A7000079E0C /* FarmHouseModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FarmHouseModel.h; sourceTree = "<group>"; };
+		3E693B1C1CE34A7000079E0C /* FarmHouseModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FarmHouseModel.m; sourceTree = "<group>"; };
+		3E693B1E1CE34E2B00079E0C /* HotelModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HotelModel.h; sourceTree = "<group>"; };
+		3E693B1F1CE34E2B00079E0C /* HotelModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HotelModel.m; sourceTree = "<group>"; };
+		3E693B211CE352BE00079E0C /* OrderModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrderModel.h; sourceTree = "<group>"; };
+		3E693B221CE352BE00079E0C /* OrderModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrderModel.m; sourceTree = "<group>"; };
 		3E8E03131CD0913A00BB7F0D /* NSData+SDDataCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+SDDataCache.h"; sourceTree = "<group>"; };
 		3E8E03141CD0913A00BB7F0D /* NSData+SDDataCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+SDDataCache.m"; sourceTree = "<group>"; };
 		3E8E03161CD0913A00BB7F0D /* TAAbstractDotView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TAAbstractDotView.h; sourceTree = "<group>"; };
@@ -688,18 +697,18 @@
 		3E11DC891CD983AE00A15FF3 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				3E11DC8A1CD983AE00A15FF3 /* CollectionTableViewController.h */,
-				3E11DC8B1CD983AE00A15FF3 /* CollectionTableViewController.m */,
-				3E11DC8C1CD983AE00A15FF3 /* SetDetailsViewController.h */,
-				3E11DC8D1CD983AE00A15FF3 /* SetDetailsViewController.m */,
-				3E11DC8E1CD983AE00A15FF3 /* SettingTableViewController.h */,
-				3E11DC8F1CD983AE00A15FF3 /* SettingTableViewController.m */,
-				3E11DC901CD983AE00A15FF3 /* ToEvaluateViewController.h */,
-				3E11DC911CD983AE00A15FF3 /* ToEvaluateViewController.m */,
-				3E11DC921CD983AE00A15FF3 /* UserOrderTableViewController.h */,
-				3E11DC931CD983AE00A15FF3 /* UserOrderTableViewController.m */,
 				3E11DC941CD983AE00A15FF3 /* UserTableViewController.h */,
 				3E11DC951CD983AE00A15FF3 /* UserTableViewController.m */,
+				3E11DC921CD983AE00A15FF3 /* UserOrderTableViewController.h */,
+				3E11DC931CD983AE00A15FF3 /* UserOrderTableViewController.m */,
+				3E11DC8A1CD983AE00A15FF3 /* CollectionTableViewController.h */,
+				3E11DC8B1CD983AE00A15FF3 /* CollectionTableViewController.m */,
+				3E11DC901CD983AE00A15FF3 /* ToEvaluateViewController.h */,
+				3E11DC911CD983AE00A15FF3 /* ToEvaluateViewController.m */,
+				3E11DC8E1CD983AE00A15FF3 /* SettingTableViewController.h */,
+				3E11DC8F1CD983AE00A15FF3 /* SettingTableViewController.m */,
+				3E11DC8C1CD983AE00A15FF3 /* SetDetailsViewController.h */,
+				3E11DC8D1CD983AE00A15FF3 /* SetDetailsViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -711,6 +720,8 @@
 				3E25DA971CDB15B400C0F2C7 /* MyFavouriteModel.m */,
 				3EF040901CE1BD82004EF453 /* MyShopModel.h */,
 				3EF040911CE1BD82004EF453 /* MyShopModel.m */,
+				3E693B211CE352BE00079E0C /* OrderModel.h */,
+				3E693B221CE352BE00079E0C /* OrderModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -774,6 +785,8 @@
 		3E11DCBA1CD983AE00A15FF3 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				3E693B1B1CE34A7000079E0C /* FarmHouseModel.h */,
+				3E693B1C1CE34A7000079E0C /* FarmHouseModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -854,6 +867,8 @@
 		3E11DCD41CD983AE00A15FF3 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				3E693B1E1CE34E2B00079E0C /* HotelModel.h */,
+				3E693B1F1CE34E2B00079E0C /* HotelModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1803,6 +1818,7 @@
 				3E11DD321CD983AE00A15FF3 /* EvaluationImageTableViewCell.m in Sources */,
 				3EBECC3A1CC605730028232F /* UIImage+GIF.m in Sources */,
 				3E11DD451CD983AE00A15FF3 /* StoreView.m in Sources */,
+				3E693B231CE352BE00079E0C /* OrderModel.m in Sources */,
 				3EBECC5F1CC61D220028232F /* UITableView+ExtraCell.m in Sources */,
 				3E11DD431CD983AE00A15FF3 /* MallTypeView.m in Sources */,
 				3EBECB351CC5C2CB0028232F /* AppDelegate.m in Sources */,
@@ -1831,6 +1847,7 @@
 				3E11DD311CD983AE00A15FF3 /* EvaluationHeadTableViewCell.m in Sources */,
 				3EBECC691CC6268D0028232F /* XTTabBar.m in Sources */,
 				3EBECC0F1CC605730028232F /* IQUIScrollView+Additions.m in Sources */,
+				3E693B201CE34E2B00079E0C /* HotelModel.m in Sources */,
 				3E11DD381CD983AE00A15FF3 /* RoomTypeButton.m in Sources */,
 				3EC3B8091CDB3B2D00A099D0 /* UploadDataTools.m in Sources */,
 				3E11DD181CD983AE00A15FF3 /* evaluateClassView.m in Sources */,
@@ -1841,6 +1858,7 @@
 				3EBECC391CC605730028232F /* UIButton+WebCache.m in Sources */,
 				3E11DD3F1CD983AE00A15FF3 /* DetailsTableViewCell.m in Sources */,
 				3EBECC2C1CC605730028232F /* UIProgressView+AFNetworking.m in Sources */,
+				3E693B1D1CE34A7000079E0C /* FarmHouseModel.m in Sources */,
 				3EBECC181CC605730028232F /* IQTitleBarButtonItem.m in Sources */,
 				3EBECC0A1CC605730028232F /* UIScrollView+MJExtension.m in Sources */,
 				3E11DD371CD983AE00A15FF3 /* IntroductionView.m in Sources */,
