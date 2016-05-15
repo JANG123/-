@@ -46,6 +46,8 @@
 #import "FarmHouseModel.h"
 #import "HotelModel.h"
 #import "OrderModel.h"
+#import "EvaluationModel.h"
+#import "CommentTypeModel.h"
 
 
 #import "LoginDataTools.h"
@@ -84,6 +86,9 @@
 #define Color_back [UIColor colorWithRed:234/255.0 green:234/255.0 blue:234/255.0 alpha:1.0]
 
 #define Color_indigo [UIColor colorWithRed:56/255.0 green:219/255.0 blue:202/255.0 alpha:1.0]
+
+
+#define Color_Star [UIColor colorWithRed:158/255.0 green:158/255.0 blue:158/255.0 alpha:1.0]
 
 
 #define Animation_Y 200

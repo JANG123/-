@@ -54,4 +54,17 @@
               WithReturnValeuBlock:(ReturnValueBlock) block
                   WithFailureBlock:(FailureBlock) failureBlock;
 
+//查询商品所有评论
+-(void)SelectGoodsCommentWithGoodsId:(NSString *)GoodsId
+                                Type:(NSString *)Type
+                       CommentTypeId:(NSString *)CommentTypeId
+                                pageIndex:(NSInteger)pageIndex
+                                 pageSize:(NSInteger)pageSize
+                     WithReturnValeuBlock:(ReturnValueBlock) block
+                         WithFailureBlock:(FailureBlock) failureBlock;
+//根据店铺id查询店铺评论类型
+-(void)SelectCommentTypeWithApplyShopsId:(NSString *)ApplyShopsId
+               WithReturnValeuBlock:(ReturnValueBlock) block
+                   WithFailureBlock:(FailureBlock) failureBlock;
+
 @end

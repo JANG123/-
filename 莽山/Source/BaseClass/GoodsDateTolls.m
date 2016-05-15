@@ -153,6 +153,50 @@ static GoodsDateTolls *gData;
         failureBlock(error);
     }];
 }
+//查询商品所有评论
+-(void)SelectGoodsCommentWithGoodsId:(NSString *)GoodsId Type:(NSString *)Type CommentTypeId:(NSString *)CommentTypeId pageIndex:(NSInteger)pageIndex pageSize:(NSInteger)pageSize WithReturnValeuBlock:(ReturnValueBlock)block WithFailureBlock:(FailureBlock)failureBlock{
+    
+    NSString *urlString = [NSString stringWithFormat:@"%@%@?GoodsId=%@&Type=%@&EcologicalId=%@&pageIndex=%ld&pageSize=%ld",URL_api,URL_SelectGoodsComment,GoodsId,Type,CommentTypeId,pageIndex,pageSize];
+    [AFNDataTools_JYT NetRequestGetWithUrl:urlString WithReturnValeuBlock:^(id code) {
+        NSDictionary *dict = (NSDictionary *)code;
+        NSNumber *longNumber = [NSNumber numberWithLong:[[dict objectForKey:@"ReturnValue"] longLongValue]];
+        NSString *ReturnValue = [longNumber stringValue];
+        NSMutableArray *tempArr = [NSMutableArray array];
+        if ([ReturnValue isEqualToString:@"0"]) {
+            for (NSDictionary *d in [dict objectForKey:@"Items"] ) {
+                EvaluationModel *aEvaluation= [EvaluationModel mj_objectWithKeyValues:d];
+                [tempArr addObject:aEvaluation];
+            }
+        }
+        NSMutableArray *numArr = [NSMutableArray arrayWithObjects:[[dict objectForKey:@"View"] objectForKey:@"Average"],[[dict objectForKey:@"View"] objectForKey:@"CommentCount"],[[dict objectForKey:@"View"] objectForKey:@"CommentCountSeveral"], nil];
+        block([NSMutableArray arrayWithObjects:[dict objectForKey:@"View"],tempArr, nil]);
+        
+    } WithFailureBlock:^(NSError *error) {
+        failureBlock(error);
+    }];
+}
+
+
+
+-(void)SelectCommentTypeWithApplyShopsId:(NSString *)ApplyShopsId WithReturnValeuBlock:(ReturnValueBlock)block WithFailureBlock:(FailureBlock)failureBlock{
+    NSString *urlString = [NSString stringWithFormat:@"%@%@?ApplyShopsId=%@",URL_api,URL_SelectCommentType,ApplyShopsId];
+    [AFNDataTools_JYT NetRequestGetWithUrl:urlString WithReturnValeuBlock:^(id code) {
+        NSDictionary *dict = (NSDictionary *)code;
+        NSNumber *longNumber = [NSNumber numberWithLong:[[dict objectForKey:@"ReturnValue"] longLongValue]];
+        NSString *ReturnValue = [longNumber stringValue];
+        NSMutableArray *tempArr = [NSMutableArray array];
+        if ([ReturnValue isEqualToString:@"0"]) {
+            for (NSDictionary *d in [dict objectForKey:@"Items"] ) {
+                CommentTypeModel *aCommentType= [CommentTypeModel mj_objectWithKeyValues:d];
+                [tempArr addObject:aCommentType];
+            }
+        }
+        block(tempArr);
+        
+    } WithFailureBlock:^(NSError *error) {
+        failureBlock(error);
+    }];
+}
 
 
 @end

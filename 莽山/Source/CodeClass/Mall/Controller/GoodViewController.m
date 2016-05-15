@@ -28,6 +28,8 @@
 @property (nonatomic,strong)UIButton *collectionButton;
 @property (nonatomic,strong)UIButton *upButton;
 @property (nonatomic,strong)NSArray *RecommendGoodsArr;
+
+@property (nonatomic,strong)NSArray *evaluationArr;
 @end
 
 @implementation GoodViewController
@@ -267,6 +269,14 @@
         _evaluationTableView.frame = CGRectMake(0, CGRectGetMaxY(_headButton1.frame), kScreenWidth, 700/PxHeight);
         _evaluationTableView.tableView.frame = CGRectMake(0, 0, kScreenWidth, 700/PxHeight);
         _evaluationTableView.tableView.scrollEnabled = NO;
+        [[GoodsDateTolls shareGetGoodsDate]SelectGoodsCommentWithGoodsId:_aGoodsDetaile.GoodsId Type:@"" CommentTypeId:@"" pageIndex:1 pageSize:2 WithReturnValeuBlock:^(id code) {
+            _evaluationTableView.dataArr = code;
+            dispatch_async(dispatch_get_main_queue(), ^{
+                _backView.contentSize = CGSizeMake(0, CGRectGetMaxY(_headButton1.frame) + [_evaluationTableView hightForTableView] + 75/PxHeight);
+            });
+        } WithFailureBlock:^(NSError *error) {
+            
+        }];
     }
 }
 
@@ -510,16 +520,33 @@
         default:
             break;
     }
+    
     return titleStr;
 }
 
 - (UIViewController*)constrollerOfPage:(NSInteger)page {
     EvaluationTableViewController *ec = [[EvaluationTableViewController alloc]init];
+    NSString *type = [NSString string];
     if (page == 0) {
         ec.isAll = YES;
-    }else{
+        type = @"";
+    }else {
         ec.isAll = NO;
+        type = [NSString stringWithFormat:@"%ld",page];
     }
+    [[GoodsDateTolls shareGetGoodsDate]SelectGoodsCommentWithGoodsId:_aGoodsDetaile.GoodsId Type:type CommentTypeId:@"" pageIndex:1 pageSize:5 WithReturnValeuBlock:^(id code) {
+        ec.dataArr = code;
+        [[GoodsDateTolls shareGetGoodsDate]SelectCommentTypeWithApplyShopsId:_aGoodsDetaile.ApplyShopsId WithReturnValeuBlock:^(id code) {
+            ec.typeArr = code;
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [ec.tableView reloadData];
+            });
+        } WithFailureBlock:^(NSError *error) {
+            
+        }];
+    } WithFailureBlock:^(NSError *error) {
+        
+    }];
     return ec;
 }
 

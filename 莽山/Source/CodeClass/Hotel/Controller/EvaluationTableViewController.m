@@ -11,7 +11,6 @@
 #import "EvaluationImageTableViewCell.h"
 #import "EvaluationHeadTableViewCell.h"
 @interface EvaluationTableViewController ()
-
 @end
 
 @implementation EvaluationTableViewController
@@ -24,13 +23,15 @@
     [self.tableView registerClass:[EvaluationHeadTableViewCell class] forCellReuseIdentifier:@"EvaluationHeadTableViewCell"];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
-    _hightdict = [NSMutableDictionary dictionary];
+    [self.tableView setExtraCellLineHidden:self.tableView];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+
 
 #pragma mark - Table view data source
 
@@ -39,26 +40,44 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 8;
+    
+    if (_isAll) {
+        if (_dataArr.count > 0) {
+            NSMutableArray *arr = _dataArr[1];
+            return arr.count  + 1;
+        }else{
+            return 0;
+        }
+    }else{
+        if (_dataArr.count > 0) {
+            NSMutableArray *arr = _dataArr[1];
+            return arr.count ;
+        }else{
+            return 0;
+        }
+    }
+
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    
-    NSInteger row;
     if (_isAll) {
-        row = indexPath.row-1;
+        if (indexPath.row == 0 && _isAll) {
+            return 151/PxHeight;
+        }
+        else{
+            EvaluationModel *evaluation = _dataArr[1][indexPath.row - 1];
+            if (evaluation.ImageDetailBean.count > 0) {
+                return 265/PxHeight;
+            }else{
+                return 130/PxHeight;
+            }
+        }
     }else{
-        row = indexPath.row;
-    }
-    
-    if (indexPath.row == 0 && _isAll) {
-        return 151/PxHeight;
-    }
-    else{
-        if (_hightdict.count > row) {
-            return [[_hightdict objectForKey:[NSString stringWithFormat:@"%ld",indexPath.row]] floatValue];
-        }else {
-            return 205/PxHeight;
+        EvaluationModel *evaluation = _dataArr[1][indexPath.row];
+        if (evaluation.ImageDetailBean.count > 0) {
+            return 265/PxHeight;
+        }else{
+            return 130/PxHeight;
         }
     }
 }
@@ -70,28 +89,60 @@
         if (cell==nil) {
             cell= [[EvaluationHeadTableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"EvaluationHeadTableViewCell"];
         }
-        
+        cell.scoreLabel.text = [NSString stringWithFormat:@"%@分",[_dataArr[0] objectForKey:@"Average"]];
+        cell.starRatingView.value = [[_dataArr[0] objectForKey:@"Average"] floatValue];
+        cell.data = _typeArr;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         return cell;
 
     }else{
-    if (indexPath.row%2 == 0) {
-        EvaluationTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"EvaluationTableViewCell" forIndexPath:indexPath];
-        if (cell==nil) {
-            cell= [[EvaluationTableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"EvaluationTableViewCell"];
+        EvaluationModel *evaluation;
+        if (_isAll) {
+            evaluation = _dataArr[1][indexPath.row - 1];
+        }else{
+            evaluation = _dataArr[1][indexPath.row];
         }
-        [_hightdict setValue:[NSString stringWithFormat:@"%f",[cell hightForCell]] forKey:[NSString stringWithFormat:@"%ld",indexPath.row]];
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        return cell;
-    }else{
+        
+        
         EvaluationImageTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"EvaluationImageTableViewCell" forIndexPath:indexPath];
         if (cell==nil) {
             cell= [[EvaluationImageTableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"EvaluationImageTableViewCell"];
         }
-        [_hightdict setValue:[NSString stringWithFormat:@"%f",[cell hightForCell]] forKey:[NSString stringWithFormat:@"%ld",indexPath.row]];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        
+        cell.nameLabel.text = evaluation.LoginId;
+        cell.dateLabel.text = evaluation.CommentTime;
+        
+        cell.starRatingView.value = [evaluation.CommentScore intValue];
+        
+        cell.detailsLabel.text = evaluation.CommentConnent;
+        
+        for (int i = 0; i < evaluation.ImageDetailBean.count; i++) {
+            switch (i) {
+                case 0:
+                    cell.image1 = [NSString stringWithFormat:@"%@%@",URL_f_b,evaluation.ImageDetailBean[i]];
+                    break;
+                case 1:
+                    cell.image2 = [NSString stringWithFormat:@"%@%@",URL_f_b,evaluation.ImageDetailBean[i]];
+                    break;
+                case 2:
+                    cell.image3 = [NSString stringWithFormat:@"%@%@",URL_f_b,evaluation.ImageDetailBean[i]];
+                    break;
+                case 3:
+                    cell.image4 = [NSString stringWithFormat:@"%@%@",URL_f_b,evaluation.ImageDetailBean[i]];
+                    break;
+                case 4:
+                    cell.image5 = [NSString stringWithFormat:@"%@%@",URL_f_b,evaluation.ImageDetailBean[i]];
+                    break;
+                case 5:
+                    cell.image6 = [NSString stringWithFormat:@"%@%@",URL_f_b,evaluation.ImageDetailBean[i]];
+                    break;
+                    
+                default:
+                    break;
+            }
+        }
         return cell;
-    }
     }
 }
 

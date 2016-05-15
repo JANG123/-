@@ -83,4 +83,9 @@
  */
 #import <pop/POP.h>
 
+/**
+ * 评分
+ */
+#import "HCSStarRatingView.h"
+
 #endif

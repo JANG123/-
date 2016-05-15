@@ -7,7 +7,7 @@
 //
 
 #import "UILabel+JYT.h"
-
+#import <objc/runtime.h>
 @implementation UILabel (JYT)
 
 +(UILabel *)setFrame:(CGRect)frame title:(NSString *)text tintColor:(UIColor *)tintColor textAlignment:(NSTextAlignment)textAlignment font:(UIFont *)font{
@@ -32,6 +32,14 @@
 {
     CGSize size =[aString sizeWithAttributes:@{NSFontAttributeName:font}];
     return size.width + 10/PxWidth;
+}
+
+-(void)setCommentType:(CommentTypeModel *)commentType{
+    objc_setAssociatedObject(self, @"commentType", commentType, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+-(CommentTypeModel *)commentType{
+    return objc_getAssociatedObject(self, @"commentType");
 }
 
 @end

@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1AD208F0CBAF0DE7D0E8DA20 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6FDB8E9E86FEC486A2819C73 /* libPods.a */; };
+		3E0AB1B91CE5C4DD00953587 /* CommentTypeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E0AB1B81CE5C4DD00953587 /* CommentTypeModel.m */; };
 		3E11DD0A1CD983AE00A15FF3 /* MapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E11DC791CD983AE00A15FF3 /* MapViewController.m */; };
 		3E11DD0B1CD983AE00A15FF3 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E11DC7D1CD983AE00A15FF3 /* LoginViewController.m */; };
 		3E11DD0C1CD983AE00A15FF3 /* RegiestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E11DC7F1CD983AE00A15FF3 /* RegiestViewController.m */; };
@@ -102,6 +103,7 @@
 		3E8E03411CD1D2A700BB7F0D /* 收藏商品.png in Resources */ = {isa = PBXBuildFile; fileRef = 3E8E033F1CD1D2A700BB7F0D /* 收藏商品.png */; };
 		3E8E03641CD32F7400BB7F0D /* IQActionSheetPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E8E03611CD32F7400BB7F0D /* IQActionSheetPickerView.m */; };
 		3E8E03651CD32F7400BB7F0D /* IQActionSheetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E8E03631CD32F7400BB7F0D /* IQActionSheetViewController.m */; };
+		3E9835031CE484F10023EEB9 /* EvaluationModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E9835021CE484F10023EEB9 /* EvaluationModel.m */; };
 		3EBECAF21CC5C2390028232F /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EBECAF11CC5C2390028232F /* main.m */; };
 		3EBECAFB1CC5C2390028232F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3EBECAF91CC5C2390028232F /* Main.storyboard */; };
 		3EBECAFD1CC5C2390028232F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3EBECAFC1CC5C2390028232F /* Assets.xcassets */; };
@@ -226,6 +228,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3E0AB1B71CE5C4DD00953587 /* CommentTypeModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentTypeModel.h; sourceTree = "<group>"; };
+		3E0AB1B81CE5C4DD00953587 /* CommentTypeModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentTypeModel.m; sourceTree = "<group>"; };
 		3E11DC781CD983AE00A15FF3 /* MapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapViewController.h; sourceTree = "<group>"; };
 		3E11DC791CD983AE00A15FF3 /* MapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapViewController.m; sourceTree = "<group>"; };
 		3E11DC7C1CD983AE00A15FF3 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
@@ -409,6 +413,8 @@
 		3E8E03611CD32F7400BB7F0D /* IQActionSheetPickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IQActionSheetPickerView.m; sourceTree = "<group>"; };
 		3E8E03621CD32F7400BB7F0D /* IQActionSheetViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IQActionSheetViewController.h; sourceTree = "<group>"; };
 		3E8E03631CD32F7400BB7F0D /* IQActionSheetViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IQActionSheetViewController.m; sourceTree = "<group>"; };
+		3E9835011CE484F10023EEB9 /* EvaluationModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EvaluationModel.h; sourceTree = "<group>"; };
+		3E9835021CE484F10023EEB9 /* EvaluationModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EvaluationModel.m; sourceTree = "<group>"; };
 		3EBECAED1CC5C2390028232F /* 莽山.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "莽山.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3EBECAF11CC5C2390028232F /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		3EBECAFA1CC5C2390028232F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -869,6 +875,10 @@
 			children = (
 				3E693B1E1CE34E2B00079E0C /* HotelModel.h */,
 				3E693B1F1CE34E2B00079E0C /* HotelModel.m */,
+				3E9835011CE484F10023EEB9 /* EvaluationModel.h */,
+				3E9835021CE484F10023EEB9 /* EvaluationModel.m */,
+				3E0AB1B71CE5C4DD00953587 /* CommentTypeModel.h */,
+				3E0AB1B81CE5C4DD00953587 /* CommentTypeModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1806,8 +1816,10 @@
 				3EBECC2D1CC605730028232F /* UIRefreshControl+AFNetworking.m in Sources */,
 				3E8E03271CD0913A00BB7F0D /* TADotView.m in Sources */,
 				3E11DD3A1CD983AE00A15FF3 /* SurroundTableViewCell.m in Sources */,
+				3E9835031CE484F10023EEB9 /* EvaluationModel.m in Sources */,
 				3EBECC261CC605730028232F /* README.md in Sources */,
 				3E11DD231CD983AE00A15FF3 /* FarmHouseTableViewController.m in Sources */,
+				3E0AB1B91CE5C4DD00953587 /* CommentTypeModel.m in Sources */,
 				3EBECC0D1CC605730028232F /* Reachability.m in Sources */,
 				3E11DD241CD983AE00A15FF3 /* FarmHouseViewController.m in Sources */,
 				3EBECC291CC605730028232F /* UIAlertView+AFNetworking.m in Sources */,

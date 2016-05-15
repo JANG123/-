@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface EvaluationTableViewController : UITableViewController
-@property (nonatomic,strong)NSMutableDictionary *hightdict;
 @property (nonatomic,assign)BOOL isAll;
+@property (nonatomic,strong)NSMutableArray *dataArr;
+@property (nonatomic,strong)NSMutableArray *typeArr;
 @end

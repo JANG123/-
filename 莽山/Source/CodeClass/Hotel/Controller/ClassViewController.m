@@ -16,6 +16,7 @@
 @implementation ClassViewController
 
 -(void)loadView{
+    //加载视图
     self.cv = [[ClassView alloc]initWithFrame:[UIScreen mainScreen].bounds];
     _cv.searchBar.delegate = self;
     _cv.delegate = self;
@@ -26,18 +27,10 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    
-    
-//    UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
-//    backButton.frame = CGRectMake(200, 200, 100, 100);
-//    [backButton addTarget:self action:@selector(goBack) forControlEvents:UIControlEventTouchUpInside];
-//    backButton.backgroundColor = [UIColor whiteColor];
-//    [self.view addSubview:backButton];
 }
 
 - (void)goBack:(UIButton *)sender
 {
-    
     [self dismissViewControllerAnimated:YES completion:^{
         
     }];

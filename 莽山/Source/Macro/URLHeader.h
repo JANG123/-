@@ -10,8 +10,8 @@
 #define Project_URLHeader_h
 
 //接口
-#define URL_api @"http://10.0.0.66"
-//#define URL_api @"http://cc520-21.xicp.net"
+//#define URL_api @"http://10.0.0.66"
+#define URL_api @"http://ms.wowzb.net"
 
 //上传图片
 #define URL_UploadImg @"/MobileAPI/Upload/UploadImg"
@@ -195,6 +195,14 @@
  */
 #define URL_GetShopList @"/MobileAPI/Shop/GetShopList"
 
+/**
+ * 查询商品所有评论
+ */
+#define URL_SelectGoodsComment @"/MobileAPI/GoodsComment/SelectGoodsComment"
 
+/**
+ * 根据店铺id查询店铺评论类型
+ */
+#define URL_SelectCommentType @"/MobileAPI/GoodsComment/SelectCommentType"
 
 #endif

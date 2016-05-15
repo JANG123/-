@@ -4,6 +4,11 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>HCSStarRatingView.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>MJExtension.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -22,17 +27,22 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>7D662614CE7D57F3DE6F1D686231C13E</key>
+		<key>9A404BC64A585FE2B60B02F6A00F18DC</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>8E3E8B56BFF5FB374F0FB0CA1FC689E2</key>
+		<key>9E0799432D58C81D492AC8EE44053A5E</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
 		<key>B23B3D15FFC0FC9893968F478086D58D</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>D10E04C12B7272D29A89CD7C5E351731</key>
 		<dict>
 			<key>primary</key>
 			<true/>

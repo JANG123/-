@@ -156,11 +156,6 @@
     
 }
 
-- (void)viewDidAppear:(BOOL)animated
-{
-    self.isApper = true;
-}
-
 /*
 // Override to support conditional editing of the table view.
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {

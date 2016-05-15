@@ -23,8 +23,14 @@
 
 @property (nonatomic,strong)NSMutableArray *hightArr;
 
+@property (nonatomic,strong)NSMutableDictionary *hightdict;
+
 @property (nonatomic,assign)BOOL type;
 
+@property (nonatomic,strong)NSMutableArray *dataArr;
+
 @property (nonatomic,weak)id <EvaluationTableDelegate>delegate;
+
 -(CGFloat)hightForTableView;
+
 @end
